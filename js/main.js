@@ -1,12 +1,25 @@
 'use strict';
 
 const PIN_WIDTH = 50;
-const PIN_HEIGHT = -70;
+const PIN_SCALE = -70;
 const PINS_QUANTITY = 8;
 const TYPE_HOTEL = ['palace', 'flat', 'house', 'bungalow'];
 const TITLE_WORDS = ['Номер', 'Хата', 'Дыра', 'Квартира'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const HOTEL_PHOTO = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+const MAP_WIDTH = 900;
+const MAP_START_X = 0;
+const MAP_TOP_Y = 130;
+const MAP_BOTTOM_Y = 620;
+const TIME_CHECKIN = 12;
+const TIME_CHECKOUT = 14;
+const MIN_PRICE = 100;
+const MAX_PRICE = 999;
+const ROOMS_MAX = 15;
+const ROOMS_MIN = 1;
+const GUESTS_MIN = 1;
+const GUESTS_MAX = 15;
+
 
 const getRandomNumber = function (min, max) {
   min = Math.ceil(min);
@@ -18,29 +31,28 @@ document.querySelector(`.map`).classList.remove(`map--faded`);
 
 const getStrLength = function (arr) {
   let randomStr;
-  for (let i = 0; i < arr.length - 1; i++) {
-    randomStr = arr.slice(0, getRandomNumber(0, arr.length - 1));
-  }
+  randomStr = arr.slice(0, getRandomNumber(0, arr.length));
+
   return randomStr;
 };
 
-const randomPin = function () {
-  const pinLocationX = getRandomNumber(0, 900);
-  const pinLocationY = getRandomNumber(130, 620);
+const randomPin = function (counter) {
+  const pinLocationX = getRandomNumber(MAP_START_X, MAP_WIDTH);
+  const pinLocationY = getRandomNumber(MAP_TOP_Y, MAP_BOTTOM_Y);
   const announcement =
     {
       'author': {
-        'avatar': `img/avatars/user0${getRandomNumber(1, 8)}.png`
+        'avatar': `img/avatars/user0${counter}.png`
       },
       'offer': {
-        'title': `Это лучшая(-ый) ${TITLE_WORDS[getRandomNumber(0, 3)]} во всем Токио!`,
+        'title': `Это лучшая(-ый) ${TITLE_WORDS[getRandomNumber(0, TITLE_WORDS.length)]} во всем Токио!`,
         'address': `Адрес предложения ${pinLocationX}, ${pinLocationY}`,
-        'price': getRandomNumber(100, 999),
-        'type': TYPE_HOTEL[getRandomNumber(0, 3)],
-        'rooms': getRandomNumber(1, 15),
-        'guests': getRandomNumber(1, 8),
-        'checkin': `1${getRandomNumber(2, 4)}:00`,
-        'checkout': `1${getRandomNumber(2, 4)}:00`,
+        'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
+        'type': TYPE_HOTEL[getRandomNumber(0, TYPE_HOTEL.length)],
+        'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
+        'guests': getRandomNumber(GUESTS_MIN, GUESTS_MAX),
+        'checkin': `${getRandomNumber(TIME_CHECKIN, TIME_CHECKOUT)}:00`,
+        'checkout': `${getRandomNumber(TIME_CHECKIN, TIME_CHECKOUT)}:00`,
         'features': getStrLength(FEATURES),
         'description': `В квартире есть все для комфортного проживания, СКИДКИ ОТ 3 ДНЕЙ И ПОСТОЯННЫМ КЛИЕНТАМ!!!`,
         'photos': getStrLength(HOTEL_PHOTO)
@@ -56,8 +68,8 @@ const randomPin = function () {
 
 const getRandomPins = function () {
   const pins = [];
-  for (let i = 0; i < PINS_QUANTITY; i++) {
-    pins.push(randomPin());
+  for (let i = 1; i <= PINS_QUANTITY; i++) {
+    pins.push(randomPin(i));
   }
   return pins;
 };
@@ -69,7 +81,7 @@ const mapList = document.querySelector(`.map`);
 
 const renderElement = function (render) {
   let element = pinTemplate.cloneNode(true);
-  element.style = `left: ${render.location.x + PIN_WIDTH}px; top: ${render.location.y + PIN_HEIGHT}px;`;
+  element.style = `left: ${render.location.x + PIN_WIDTH}px; top: ${render.location.y + PIN_SCALE}px;`;
   element.querySelector('img').src = render.author.avatar;
   element.querySelector('img').alt = render.offer.title;
 
@@ -78,7 +90,7 @@ const renderElement = function (render) {
 
 const mapFragment = document.createDocumentFragment();
 
-for (let i = 0; i < pinsBase.length - 1; i++) {
+for (let i = 0; i < pinsBase.length; i++) {
   mapFragment.appendChild(renderElement(pinsBase[i]));
   mapList.appendChild(mapFragment);
 }
