@@ -77,7 +77,7 @@ const getRandomPins = function () {
 const pinsBase = getRandomPins();
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const mapList = document.querySelector(`.map`);
+const mapList = document.querySelector(`.map__pins`);
 
 const renderElement = function (render) {
   let element = pinTemplate.cloneNode(true);
