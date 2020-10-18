@@ -3,7 +3,11 @@
 const PIN_WIDTH_SCALE = 25;
 const PIN_SCALE = 70;
 const PINS_QUANTITY = 8;
-const TYPE_HOTEL = ['palace', 'flat', 'house', 'bungalow'];
+const TYPE_HOTEL = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalow': 'Бунгало'};
 const TITLE_WORDS = ['Номер', 'Хата', 'Дыра', 'Квартира'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const HOTEL_PHOTO = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -19,6 +23,7 @@ const ROOMS_MAX = 15;
 const ROOMS_MIN = 1;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 15;
+const TYPES = Object.keys(TYPE_HOTEL);
 
 const getRandomNumber = function (min, max) {
   min = Math.ceil(min);
@@ -48,7 +53,7 @@ const randomPin = function (counter) {
         'title': `Это лучшая ${TITLE_WORDS[getRandomNumber(0, TITLE_WORDS.length - 1)]} во всем Токио!`,
         'address': `Адрес предложения ${pinLocationX}, ${pinLocationY}`,
         'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
-        'type': TYPE_HOTEL[getRandomNumber(1, TYPE_HOTEL.length)],
+        'type': TYPES[getRandomNumber(0, TYPES.length - 1)],
         'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
         'guests': getRandomNumber(GUESTS_MIN, GUESTS_MAX),
         'checkin': `${getRandomNumber(TIME_CHECKIN, TIME_CHECKOUT)}:00`,
@@ -105,7 +110,7 @@ const getPinCard = function (element) {
   card.querySelector('.popup__text--price').textContent = `${element.offer.price} ₽/ночь`;
   card.querySelector('.popup__text--capacity').textContent = `${element.offer.rooms} комнаты для ${element.offer.guests}`;
   card.querySelector('.popup__text--time').textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
-  card.querySelector('.popup__type').textContent = element.offer.type;
+  card.querySelector('.popup__type').textContent = TYPE_HOTEL[element.offer.type];
   const featuresList = card.querySelector('.popup__features');
   featuresList.innerHTML = '';
 
