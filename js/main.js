@@ -3,7 +3,11 @@
 const PIN_WIDTH_SCALE = 25;
 const PIN_SCALE = 70;
 const PINS_QUANTITY = 8;
-const TYPE_HOTEL = ['palace', 'flat', 'house', 'bungalow'];
+const TYPE_HOTEL = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalow': 'Бунгало'};
 const TITLE_WORDS = ['Номер', 'Хата', 'Дыра', 'Квартира'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const HOTEL_PHOTO = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -19,7 +23,7 @@ const ROOMS_MAX = 15;
 const ROOMS_MIN = 1;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 15;
-
+const TYPES = Object.keys(TYPE_HOTEL);
 
 const getRandomNumber = function (min, max) {
   min = Math.ceil(min);
@@ -27,7 +31,8 @@ const getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-document.querySelector(`.map`).classList.remove(`map--faded`);
+const map = document.querySelector(`.map`);
+map.classList.remove(`map--faded`);
 
 const getStrRandom = function (arr) {
   let randomStr;
@@ -45,10 +50,10 @@ const randomPin = function (counter) {
         'avatar': `img/avatars/user0${counter}.png`
       },
       'offer': {
-        'title': `Это лучшая(-ый) ${TITLE_WORDS[getRandomNumber(0, TITLE_WORDS.length)]} во всем Токио!`,
+        'title': `Это лучшая ${TITLE_WORDS[getRandomNumber(0, TITLE_WORDS.length - 1)]} во всем Токио!`,
         'address': `Адрес предложения ${pinLocationX}, ${pinLocationY}`,
         'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
-        'type': TYPE_HOTEL[getRandomNumber(1, TYPE_HOTEL.length)],
+        'type': TYPES[getRandomNumber(0, TYPES.length - 1)],
         'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
         'guests': getRandomNumber(GUESTS_MIN, GUESTS_MAX),
         'checkin': `${getRandomNumber(TIME_CHECKIN, TIME_CHECKOUT)}:00`,
@@ -94,3 +99,52 @@ for (let i = 0; i < pinsBase.length; i++) {
   mapFragment.appendChild(renderElement(pinsBase[i]));
   mapList.appendChild(mapFragment);
 }
+
+const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+const getPinCard = function (element) {
+  const card = cardTemplate.cloneNode(true);
+  card.querySelector('.popup__avatar').src = element.author.avatar;
+  card.querySelector('.popup__title').textContent = element.offer.title;
+  card.querySelector('.popup__text--address').textContent = element.offer.address;
+  card.querySelector('.popup__text--price').textContent = `${element.offer.price} ₽/ночь`;
+  card.querySelector('.popup__text--capacity').textContent = `${element.offer.rooms} комнаты для ${element.offer.guests}`;
+  card.querySelector('.popup__text--time').textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
+  card.querySelector('.popup__type').textContent = TYPE_HOTEL[element.offer.type];
+  const featuresList = card.querySelector('.popup__features');
+  featuresList.innerHTML = '';
+
+  if (element.offer.features.length === 0) {
+    card.removeChild(featuresList);
+  }
+
+  for (let i = 0; i < element.offer.features.length; i++) {
+    const featuresItem = document.createElement('li');
+    featuresItem.classList.add('popup__feature', `popup__feature--${element.offer.features[i]}`);
+    featuresList.appendChild(featuresItem);
+  }
+
+  card.querySelector('.popup__description').textContent = element.offer.description;
+  const photoList = card.querySelector('.popup__photos');
+  const photoItem = photoList.querySelector('.popup__photo');
+
+  if (element.offer.photos.length === 0) {
+    card.removeChild(photoList);
+  }
+
+  for (let j = 0; j < element.offer.photos.length; j++) {
+    const item = photoItem.cloneNode(true);
+    item.src = element.offer.photos[j];
+    photoList.appendChild(item);
+  }
+  photoList.removeChild(photoItem);
+
+  return card;
+};
+
+const mapFilter = map.querySelector('.map__filters-container');
+const pinPopupFragment = document.createDocumentFragment();
+const pinPopup = getPinCard(pinsBase[0]);
+map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
+
+
