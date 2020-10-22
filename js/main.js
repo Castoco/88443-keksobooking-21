@@ -1,16 +1,17 @@
+/* eslint-disable no-lone-blocks */
 'use strict';
 
 const PIN_WIDTH_SCALE = 25;
 const PIN_SCALE = 70;
 const PINS_QUANTITY = 8;
 const TYPE_HOTEL = {
-  'palace': 'Дворец',
-  'flat': 'Квартира',
-  'house': 'Дом',
-  'bungalow': 'Бунгало'};
-const TITLE_WORDS = ['Номер', 'Хата', 'Дыра', 'Квартира'];
-const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const HOTEL_PHOTO = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  'palace': `Дворец`,
+  'flat': `Квартира`,
+  'house': `Дом`,
+  'bungalow': `Бунгало`};
+const TITLE_WORDS = [`Номер`, `Хата`, `Дыра`, `Квартира`];
+const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+const HOTEL_PHOTO = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 const MAP_WIDTH = 1200;
 const MAP_START_X = 25;
 const MAP_TOP_Y = 130;
@@ -25,14 +26,86 @@ const GUESTS_MIN = 1;
 const GUESTS_MAX = 15;
 const TYPES = Object.keys(TYPE_HOTEL);
 
+
+const map = document.querySelector(`.map`);
+const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
+const adForm = document.querySelector(`.ad-form`);
+const adFormFieldset = adForm.querySelectorAll(`fieldset`);
+const mainPin = map.querySelector(`.map__pin--main`);
+
+// делаю адрес точки
+
+const mainPinWidth = 65;
+const mainPinHeight = 65;
+const mainPinCenter = {
+  x: mainPin.offsetLeft - (mainPinWidth / 2),
+  y: mainPin.offsetTop - (mainPinHeight / 2)
+};
+
+const mainPinArrow = {
+  x: mainPin.offsetLeft - (mainPinWidth / 2),
+  y: mainPin.offsetTop + mainPinHeight
+};
+
+const addressField = adForm.querySelector(`#address`);
+
+const getMainPinAdress = (position) => {
+  addressField.setAttribute(`value`, `${position.x}, ${position.y}`);
+};
+
+getMainPinAdress(mainPinCenter);
+// Вызов функции записи адреса До! активации карты.
+
+mainPin.addEventListener(`mousedown`, function (evt) {
+  if (evt.which === 1) {
+    activatePins();
+    activateForm();
+  }
+});
+
+mainPin.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    activatePins();
+    activateForm();
+  }
+});
+
+const disabledForm = function () {
+  map.classList.add(`map--faded`);
+  adForm.classList.add(`ad-form--disabled`);
+
+  for (let i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].setAttribute(`disabled`, `disabled`);
+  }
+
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].setAttribute(`disabled`, `disabled`);
+  }
+};
+
+disabledForm();
+
+// Disabled mode finish
+
+const activateForm = function () {
+  map.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
+  getMainPinAdress(mainPinArrow);
+
+  for (let i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].removeAttribute(`disabled`, `disabled`);
+  }
+
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].removeAttribute(`disabled`, `disabled`);
+  }
+};
+
 const getRandomNumber = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
-const map = document.querySelector(`.map`);
-map.classList.remove(`map--faded`);
 
 const getStrRandom = function (arr) {
   let randomStr;
@@ -80,26 +153,30 @@ const getRandomPins = function () {
 };
 
 const pinsBase = getRandomPins();
-
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapList = document.querySelector(`.map__pins`);
 
-const renderElement = function (render) {
-  const element = pinTemplate.cloneNode(true);
-  element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
-  element.querySelector('img').src = render.author.avatar;
-  element.querySelector('img').alt = render.offer.title;
+const activatePins = function () {
+  const renderElement = function (render) {
+    const element = pinTemplate.cloneNode(true);
+    element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
+    element.querySelector(`img`).src = render.author.avatar;
+    element.querySelector(`img`).alt = render.offer.title;
 
-  return element;
+    return element;
+  };
+
+  const mapFragment = document.createDocumentFragment();
+
+  for (let i = 0; i < pinsBase.length; i++) {
+    mapFragment.appendChild(renderElement(pinsBase[i]));
+    mapList.appendChild(mapFragment);
+  }
+
 };
 
-const mapFragment = document.createDocumentFragment();
 
-for (let i = 0; i < pinsBase.length; i++) {
-  mapFragment.appendChild(renderElement(pinsBase[i]));
-  mapList.appendChild(mapFragment);
-}
-
+/* Начало отрисовки и вызова карточек
 const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 const getPinCard = function (element) {
@@ -142,9 +219,53 @@ const getPinCard = function (element) {
   return card;
 };
 
+Создание первой карточки из массива
 const mapFilter = map.querySelector('.map__filters-container');
 const pinPopupFragment = document.createDocumentFragment();
 const pinPopup = getPinCard(pinsBase[0]);
 map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
+*/
 
+
+// Валидация формы
+
+const capacity = adForm.querySelector(`#capacity`);
+const rooms = adForm.querySelector(`#room_number`);
+
+capacity.addEventListener(`input`, function () {
+  if (parseInt(rooms.value, 10) !== 100 && parseInt(capacity.value, 10) === 0 || parseInt(rooms.value, 10) === 100 && parseInt(capacity.value, 10) !== 0) {
+    capacity.setCustomValidity('100 комнат не для гостей');
+    capacity.style.background = 'tomato';
+    rooms.style.background = 'tomato';
+  } else if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
+    capacity.setCustomValidity(`Много гостей для ${rooms.value}  комнаты`);
+    capacity.style.background = 'tomato';
+    rooms.style.background = 'tomato';
+  } else {
+    capacity.setCustomValidity('');
+    capacity.style.background = '';
+    rooms.style.background = '';
+
+
+  }
+  capacity.reportValidity();
+});
+
+rooms.addEventListener(`input`, function () {
+  if (parseInt(rooms.value, 10) !== 100 && parseInt(capacity.value, 10) === 0 || parseInt(rooms.value, 10) === 100 && parseInt(capacity.value, 10) !== 0) {
+    rooms.setCustomValidity(`100 комнат не для гостей`);
+    rooms.style.background = 'tomato';
+    capacity.style.background = 'tomato';
+  } else if (parseInt(rooms.value, 10) < parseInt(capacity.value, 10)) {
+    rooms.setCustomValidity(`Мало комнат для ${capacity.value} гостей`);
+    rooms.style.background = 'tomato';
+    capacity.style.background = 'tomato';
+  } else {
+    rooms.setCustomValidity('');
+    rooms.style.background = '';
+    capacity.style.background = '';
+
+  }
+  rooms.reportValidity();
+});
 
