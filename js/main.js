@@ -231,10 +231,12 @@ map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
 
 const capacity = adForm.querySelector(`#capacity`);
 const rooms = adForm.querySelector(`#room_number`);
+const maxRooms = 100;
+const notGuests = 0;
 
 capacity.addEventListener(`input`, function () {
-  if (parseInt(rooms.value, 10) !== 100 && parseInt(capacity.value, 10) === 0 || parseInt(rooms.value, 10) === 100 && parseInt(capacity.value, 10) !== 0) {
-    capacity.setCustomValidity('100 комнат не для гостей');
+  if (parseInt(rooms.value, 10) !== maxRooms && parseInt(capacity.value, 10) === notGuests || parseInt(rooms.value, 10) === maxRooms && parseInt(capacity.value, 10) !== notGuests) {
+    capacity.setCustomValidity(`${maxRooms} комнат не для гостей`);
     capacity.style.background = 'tomato';
     rooms.style.background = 'tomato';
   } else if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
@@ -252,8 +254,8 @@ capacity.addEventListener(`input`, function () {
 });
 
 rooms.addEventListener(`input`, function () {
-  if (parseInt(rooms.value, 10) !== 100 && parseInt(capacity.value, 10) === 0 || parseInt(rooms.value, 10) === 100 && parseInt(capacity.value, 10) !== 0) {
-    rooms.setCustomValidity(`100 комнат не для гостей`);
+  if (parseInt(rooms.value, 10) !== maxRooms && parseInt(capacity.value, 10) === notGuests || parseInt(rooms.value, 10) === maxRooms && parseInt(capacity.value, 10) !== notGuests) {
+    rooms.setCustomValidity(`${maxRooms} комнат не для гостей`);
     rooms.style.background = 'tomato';
     capacity.style.background = 'tomato';
   } else if (parseInt(rooms.value, 10) < parseInt(capacity.value, 10)) {
