@@ -32,8 +32,29 @@ const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`)
 const adForm = document.querySelector(`.ad-form`);
 const adFormFieldset = adForm.querySelectorAll(`fieldset`);
 const mainPin = map.querySelector(`.map__pin--main`);
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const mapList = document.querySelector(`.map__pins`);
 
-// делаю адрес точки
+
+// --------------------------------------------------Состояние до активации карты
+const disabledForm = function () {
+  map.classList.add(`map--faded`);
+  adForm.classList.add(`ad-form--disabled`);
+
+  for (let i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].setAttribute(`disabled`, `disabled`);
+  }
+
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].setAttribute(`disabled`, `disabled`);
+  }
+};
+
+disabledForm();
+
+// --------------------------------------------------Состояние до активации карты конец
+
+// -------------------------------------------------- Ищу адрес точки
 
 const mainPinWidth = 65;
 const mainPinHeight = 65;
@@ -54,38 +75,31 @@ const getMainPinAdress = (position) => {
 };
 
 getMainPinAdress(mainPinCenter);
-// Вызов функции записи адреса До! активации карты.
+// -------------------------------------------------- Нашел адрес точки
 
-mainPin.addEventListener(`mousedown`, function (evt) {
+// ------------------------------------ Активирую форму и создаю базу пинов, по клику на главную кнопку(начало)
+
+const onPinMouseDown = function (evt) {
   if (evt.which === 1) {
     activatePins();
     activateForm();
   }
-});
+  mainPin.removeEventListener(`mousedown`, onPinMouseDown);
+};
 
-mainPin.addEventListener(`keydown`, function (evt) {
+const onPinKeyDown = function (evt) {
   if (evt.key === `Enter`) {
     activatePins();
     activateForm();
   }
-});
-
-const disabledForm = function () {
-  map.classList.add(`map--faded`);
-  adForm.classList.add(`ad-form--disabled`);
-
-  for (let i = 0; i < adFormFieldset.length; i++) {
-    adFormFieldset[i].setAttribute(`disabled`, `disabled`);
-  }
-
-  for (let i = 0; i < mapFilters.length; i++) {
-    mapFilters[i].setAttribute(`disabled`, `disabled`);
-  }
+  mainPin.removeEventListener(`keydown`, onPinKeyDown);
 };
 
-disabledForm();
+mainPin.addEventListener(`mousedown`, onPinMouseDown);
+mainPin.addEventListener(`keydown`, onPinKeyDown);
 
-// Disabled mode finish
+// Активирую форму и создаю базу пинов по клику на главную кнопку( окончание работы)
+
 
 const activateForm = function () {
   map.classList.remove(`map--faded`);
@@ -152,27 +166,22 @@ const getRandomPins = function () {
   return pins;
 };
 
-const pinsBase = getRandomPins();
-const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const mapList = document.querySelector(`.map__pins`);
+const renderElement = function (render) {
+  const element = pinTemplate.cloneNode(true);
+  element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
+  element.querySelector(`img`).src = render.author.avatar;
+  element.querySelector(`img`).alt = render.offer.title;
+
+  return element;
+};
 
 const activatePins = function () {
-  const renderElement = function (render) {
-    const element = pinTemplate.cloneNode(true);
-    element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
-    element.querySelector(`img`).src = render.author.avatar;
-    element.querySelector(`img`).alt = render.offer.title;
-
-    return element;
-  };
-
   const mapFragment = document.createDocumentFragment();
-
+  const pinsBase = getRandomPins();
   for (let i = 0; i < pinsBase.length; i++) {
     mapFragment.appendChild(renderElement(pinsBase[i]));
     mapList.appendChild(mapFragment);
   }
-
 };
 
 
@@ -224,50 +233,38 @@ const mapFilter = map.querySelector('.map__filters-container');
 const pinPopupFragment = document.createDocumentFragment();
 const pinPopup = getPinCard(pinsBase[0]);
 map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
+
+Конец отрисовки карточек
 */
 
 
-// Валидация формы
+// Валидация формы (Гости и комнаты) старт
 
 const capacity = adForm.querySelector(`#capacity`);
 const rooms = adForm.querySelector(`#room_number`);
 const maxRooms = 100;
 const notGuests = 0;
 
-capacity.addEventListener(`input`, function () {
-  if (parseInt(rooms.value, 10) !== maxRooms && parseInt(capacity.value, 10) === notGuests || parseInt(rooms.value, 10) === maxRooms && parseInt(capacity.value, 10) !== notGuests) {
-    capacity.setCustomValidity(`${maxRooms} комнат не для гостей`);
-    capacity.style.background = 'tomato';
-    rooms.style.background = 'tomato';
-  } else if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
-    capacity.setCustomValidity(`Много гостей для ${rooms.value}  комнаты`);
-    capacity.style.background = 'tomato';
-    rooms.style.background = 'tomato';
-  } else {
-    capacity.setCustomValidity('');
-    capacity.style.background = '';
-    rooms.style.background = '';
-
-
-  }
-  capacity.reportValidity();
-});
-
-rooms.addEventListener(`input`, function () {
-  if (parseInt(rooms.value, 10) !== maxRooms && parseInt(capacity.value, 10) === notGuests || parseInt(rooms.value, 10) === maxRooms && parseInt(capacity.value, 10) !== notGuests) {
-    rooms.setCustomValidity(`${maxRooms} комнат не для гостей`);
-    rooms.style.background = 'tomato';
-    capacity.style.background = 'tomato';
-  } else if (parseInt(rooms.value, 10) < parseInt(capacity.value, 10)) {
-    rooms.setCustomValidity(`Мало комнат для ${capacity.value} гостей`);
-    rooms.style.background = 'tomato';
-    capacity.style.background = 'tomato';
-  } else {
+const selectRoom = function (evt) {
+  if (evt.target.matches('#capacity') || evt.target.matches('#room_number')) {
     rooms.setCustomValidity('');
+    capacity.setCustomValidity('');
     rooms.style.background = '';
     capacity.style.background = '';
+    if (parseInt(rooms.value, 10) !== maxRooms && parseInt(capacity.value, 10) === notGuests
+    || parseInt(rooms.value, 10) === maxRooms && parseInt(capacity.value, 10) !== notGuests) {
+      evt.target.setCustomValidity(`Выберете другое количество гостей для ${rooms.value} комнат`);
+      evt.target.style.background = 'tomato';
+    }
 
+    if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
+      evt.target.setCustomValidity(`Много гостей для ${rooms.value}  комнаты`);
+      evt.target.style.background = 'tomato';
+    }
+    evt.target.reportValidity();
   }
-  rooms.reportValidity();
-});
+};
 
+adForm.addEventListener(`input`, selectRoom);
+
+// Валидация формы (Гости и комнаты) Конец
