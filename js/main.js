@@ -38,12 +38,12 @@ const mainPin = map.querySelector(`.map__pin--main`);
 const mainPinWidth = 65;
 const mainPinHeight = 65;
 const mainPinCenter = {
-  x: mainPin.offsetLeft - (mainPinWidth / 2),
-  y: mainPin.offsetTop - (mainPinHeight / 2)
+  x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
+  y: mainPin.offsetTop + Math.round(mainPinHeight / 2)
 };
 
 const mainPinArrow = {
-  x: mainPin.offsetLeft - (mainPinWidth / 2),
+  x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
   y: mainPin.offsetTop + mainPinHeight
 };
 
