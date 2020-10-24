@@ -25,6 +25,8 @@ const ROOMS_MIN = 1;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 15;
 const TYPES = Object.keys(TYPE_HOTEL);
+const MAXROOMS = 100;
+const NOTGUESTS = 0;
 
 
 const map = document.querySelector(`.map`);
@@ -34,6 +36,8 @@ const adFormFieldset = adForm.querySelectorAll(`fieldset`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapList = document.querySelector(`.map__pins`);
+const rooms = adForm.querySelector(`#room_number`);
+const capacity = adForm.querySelector(`#capacity`);
 
 
 // --------------------------------------------------Состояние до активации карты
@@ -240,26 +244,25 @@ map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
 
 // Валидация формы (Гости и комнаты) старт
 
-const capacity = adForm.querySelector(`#capacity`);
-const rooms = adForm.querySelector(`#room_number`);
-const maxRooms = 100;
-const notGuests = 0;
 
 const selectRoom = function (evt) {
-  if (evt.target.matches('#capacity') || evt.target.matches('#room_number')) {
-    rooms.setCustomValidity('');
-    capacity.setCustomValidity('');
-    rooms.style.background = '';
-    capacity.style.background = '';
-    if (parseInt(rooms.value, 10) !== maxRooms && parseInt(capacity.value, 10) === notGuests
-    || parseInt(rooms.value, 10) === maxRooms && parseInt(capacity.value, 10) !== notGuests) {
+
+  if (evt.target.matches(`#capacity`) || evt.target.matches(`#room_number`)) {
+    evt.target.setCustomValidity(``);
+    evt.target.style.boxShadow = ``;
+    rooms.setCustomValidity(``);
+    rooms.style.boxShadow = ``;
+    capacity.setCustomValidity(``);
+    capacity.style.boxShadow = ``;
+    if (parseInt(rooms.value, 10) !== MAXROOMS && parseInt(capacity.value, 10) === NOTGUESTS
+    || parseInt(rooms.value, 10) === MAXROOMS && parseInt(capacity.value, 10) !== NOTGUESTS) {
       evt.target.setCustomValidity(`Выберете другое количество гостей для ${rooms.value} комнат`);
-      evt.target.style.background = 'tomato';
+      evt.target.style.boxShadow = `0 0 2px 2px #2600ff`;
     }
 
     if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
       evt.target.setCustomValidity(`Много гостей для ${rooms.value}  комнаты`);
-      evt.target.style.background = 'tomato';
+      evt.target.style.boxShadow = `0 0 2px 2px #2600ff`;
     }
     evt.target.reportValidity();
   }
