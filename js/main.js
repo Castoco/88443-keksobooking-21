@@ -41,6 +41,7 @@ const rooms = adForm.querySelector(`#room_number`);
 const capacity = adForm.querySelector(`#capacity`);
 const mapFilter = map.querySelector('.map__filters-container');
 const pinPopupFragment = document.createDocumentFragment();
+const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 
 // --------------------------------------------------Состояние до активации карты
@@ -187,13 +188,22 @@ const activatePins = function () {
   const pinsBase = getRandomPins();
   for (let i = 0; i < pinsBase.length; i++) {
     let pin = renderElement(pinsBase[i]);
-    onClickPin(pin, pinsBase[i]);
+    onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
     mapFragment.appendChild(pin);
     mapList.appendChild(mapFragment);
   }
 };
 
-const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+const onClickPin = function (pin, base) {
+  pin.addEventListener('click', function () {
+    makeCard(base);
+  });
+};
+
+const makeCard = function (pinPopup) {
+  const card = getPinCard(pinPopup);
+  map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
+};
 
 const getPinCard = function (element) {
   const card = cardTemplate.cloneNode(true);
@@ -235,17 +245,6 @@ const getPinCard = function (element) {
   return card;
 };
 
-const onClickPin = function (pin, base) {
-  pin.addEventListener('click', function () {
-    makeCard(base);
-  });
-
-};
-
-const makeCard = function (pinPopup) {
-  const card = getPinCard(pinPopup);
-  map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
-};
 
 // ------------------------------Валидация формы (Гости и комнаты) старт
 
