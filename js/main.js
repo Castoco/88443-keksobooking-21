@@ -27,6 +27,7 @@ const GUESTS_MAX = 15;
 const TYPES = Object.keys(TYPE_HOTEL);
 const MAXROOMS = 100;
 const NOTGUESTS = 0;
+const INPUT_SHADOW = `0 0 2px 2px #ff0000`;
 
 
 const map = document.querySelector(`.map`);
@@ -242,7 +243,7 @@ map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
 */
 
 
-// Валидация формы (Гости и комнаты) старт
+// ------------------------------Валидация формы (Гости и комнаты) старт
 
 
 const selectRoom = function (evt) {
@@ -257,12 +258,12 @@ const selectRoom = function (evt) {
     if (parseInt(rooms.value, 10) !== MAXROOMS && parseInt(capacity.value, 10) === NOTGUESTS
     || parseInt(rooms.value, 10) === MAXROOMS && parseInt(capacity.value, 10) !== NOTGUESTS) {
       evt.target.setCustomValidity(`Выберете другое количество гостей для ${rooms.value} комнат`);
-      evt.target.style.boxShadow = `0 0 2px 2px #2600ff`;
+      evt.target.style.boxShadow = INPUT_SHADOW;
     }
 
     if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
       evt.target.setCustomValidity(`Много гостей для ${rooms.value}  комнаты`);
-      evt.target.style.boxShadow = `0 0 2px 2px #2600ff`;
+      evt.target.style.boxShadow = INPUT_SHADOW;
     }
     evt.target.reportValidity();
   }
@@ -270,4 +271,4 @@ const selectRoom = function (evt) {
 
 adForm.addEventListener(`input`, selectRoom);
 
-// Валидация формы (Гости и комнаты) Конец
+// ---------------------------------Валидация формы (Гости и комнаты) Конец
