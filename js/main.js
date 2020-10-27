@@ -1,16 +1,17 @@
+/* eslint-disable no-lone-blocks */
 'use strict';
 
 const PIN_WIDTH_SCALE = 25;
 const PIN_SCALE = 70;
 const PINS_QUANTITY = 8;
 const TYPE_HOTEL = {
-  'palace': 'Дворец',
-  'flat': 'Квартира',
-  'house': 'Дом',
-  'bungalow': 'Бунгало'};
-const TITLE_WORDS = ['Номер', 'Хата', 'Дыра', 'Квартира'];
-const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const HOTEL_PHOTO = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  'palace': `Дворец`,
+  'flat': `Квартира`,
+  'house': `Дом`,
+  'bungalow': `Бунгало`};
+const TITLE_WORDS = [`Номер`, `Хата`, `Дыра`, `Квартира`];
+const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+const HOTEL_PHOTO = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 const MAP_WIDTH = 1200;
 const MAP_START_X = 25;
 const MAP_TOP_Y = 130;
@@ -24,15 +25,106 @@ const ROOMS_MIN = 1;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 15;
 const TYPES = Object.keys(TYPE_HOTEL);
+const MAXROOMS = 100;
+const NOTGUESTS = 0;
+const INPUT_SHADOW = `0 0 2px 2px #ff0000`;
+
+
+const map = document.querySelector(`.map`);
+const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
+const adForm = document.querySelector(`.ad-form`);
+const adFormFieldset = adForm.querySelectorAll(`fieldset`);
+const mainPin = map.querySelector(`.map__pin--main`);
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const mapList = document.querySelector(`.map__pins`);
+const rooms = adForm.querySelector(`#room_number`);
+const capacity = adForm.querySelector(`#capacity`);
+
+
+// --------------------------------------------------Состояние до активации карты
+const disabledForm = function () {
+  map.classList.add(`map--faded`);
+  adForm.classList.add(`ad-form--disabled`);
+
+  for (let i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].setAttribute(`disabled`, `disabled`);
+  }
+
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].setAttribute(`disabled`, `disabled`);
+  }
+};
+
+disabledForm();
+
+// --------------------------------------------------Состояние до активации карты конец
+
+// -------------------------------------------------- Ищу адрес точки
+
+const mainPinWidth = 65;
+const mainPinHeight = 65;
+const mainPinCenter = {
+  x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
+  y: mainPin.offsetTop + Math.round(mainPinHeight / 2)
+};
+
+const mainPinArrow = {
+  x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
+  y: mainPin.offsetTop + mainPinHeight
+};
+
+const addressField = adForm.querySelector(`#address`);
+
+const getMainPinAdress = (position) => {
+  addressField.setAttribute(`value`, `${position.x}, ${position.y}`);
+};
+
+getMainPinAdress(mainPinCenter);
+// -------------------------------------------------- Нашел адрес точки
+
+// ------------------------------------ Активирую форму и создаю базу пинов, по клику на главную кнопку(начало)
+
+const onPinMouseDown = function (evt) {
+  if (evt.which === 1) {
+    activatePins();
+    activateForm();
+  }
+  mainPin.removeEventListener(`mousedown`, onPinMouseDown);
+};
+
+const onPinKeyDown = function (evt) {
+  if (evt.key === `Enter`) {
+    activatePins();
+    activateForm();
+  }
+  mainPin.removeEventListener(`keydown`, onPinKeyDown);
+};
+
+mainPin.addEventListener(`mousedown`, onPinMouseDown);
+mainPin.addEventListener(`keydown`, onPinKeyDown);
+
+// Активирую форму и создаю базу пинов по клику на главную кнопку( окончание работы)
+
+
+const activateForm = function () {
+  map.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
+  getMainPinAdress(mainPinArrow);
+
+  for (let i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].removeAttribute(`disabled`, `disabled`);
+  }
+
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].removeAttribute(`disabled`, `disabled`);
+  }
+};
 
 const getRandomNumber = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
-const map = document.querySelector(`.map`);
-map.classList.remove(`map--faded`);
 
 const getStrRandom = function (arr) {
   let randomStr;
@@ -79,27 +171,26 @@ const getRandomPins = function () {
   return pins;
 };
 
-const pinsBase = getRandomPins();
-
-const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const mapList = document.querySelector(`.map__pins`);
-
 const renderElement = function (render) {
   const element = pinTemplate.cloneNode(true);
   element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
-  element.querySelector('img').src = render.author.avatar;
-  element.querySelector('img').alt = render.offer.title;
+  element.querySelector(`img`).src = render.author.avatar;
+  element.querySelector(`img`).alt = render.offer.title;
 
   return element;
 };
 
-const mapFragment = document.createDocumentFragment();
+const activatePins = function () {
+  const mapFragment = document.createDocumentFragment();
+  const pinsBase = getRandomPins();
+  for (let i = 0; i < pinsBase.length; i++) {
+    mapFragment.appendChild(renderElement(pinsBase[i]));
+    mapList.appendChild(mapFragment);
+  }
+};
 
-for (let i = 0; i < pinsBase.length; i++) {
-  mapFragment.appendChild(renderElement(pinsBase[i]));
-  mapList.appendChild(mapFragment);
-}
 
+/* Начало отрисовки и вызова карточек
 const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 const getPinCard = function (element) {
@@ -142,9 +233,42 @@ const getPinCard = function (element) {
   return card;
 };
 
+Создание первой карточки из массива
 const mapFilter = map.querySelector('.map__filters-container');
 const pinPopupFragment = document.createDocumentFragment();
 const pinPopup = getPinCard(pinsBase[0]);
 map.insertBefore(pinPopupFragment.appendChild(pinPopup), mapFilter);
 
+Конец отрисовки карточек
+*/
 
+
+// ------------------------------Валидация формы (Гости и комнаты) старт
+
+
+const selectRoom = function (evt) {
+
+  if (evt.target.matches(`#capacity`) || evt.target.matches(`#room_number`)) {
+    evt.target.setCustomValidity(``);
+    evt.target.style.boxShadow = ``;
+    rooms.setCustomValidity(``);
+    rooms.style.boxShadow = ``;
+    capacity.setCustomValidity(``);
+    capacity.style.boxShadow = ``;
+    if (parseInt(rooms.value, 10) !== MAXROOMS && parseInt(capacity.value, 10) === NOTGUESTS
+    || parseInt(rooms.value, 10) === MAXROOMS && parseInt(capacity.value, 10) !== NOTGUESTS) {
+      evt.target.setCustomValidity(`Выберете другое количество гостей для ${rooms.value} комнат`);
+      evt.target.style.boxShadow = INPUT_SHADOW;
+    }
+
+    if (parseInt(capacity.value, 10) > parseInt(rooms.value, 10)) {
+      evt.target.setCustomValidity(`Много гостей для ${rooms.value}  комнаты`);
+      evt.target.style.boxShadow = INPUT_SHADOW;
+    }
+    evt.target.reportValidity();
+  }
+};
+
+adForm.addEventListener(`input`, selectRoom);
+
+// ---------------------------------Валидация формы (Гости и комнаты) Конец
