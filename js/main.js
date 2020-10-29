@@ -52,7 +52,7 @@ const adForm = document.querySelector(`.ad-form`);
 const adFormFieldset = adForm.querySelectorAll(`fieldset`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const mapList = document.querySelector(`.map__pins`);
+const mapList = map.querySelector(`.map__pins`);
 const rooms = adForm.querySelector(`#room_number`);
 const capacity = adForm.querySelector(`#capacity`);
 const mapFilter = map.querySelector(`.map__filters-container`);
@@ -217,12 +217,15 @@ const activatePins = function () {
 
 const onClickPin = function (pin, base) {
   pin.addEventListener(`click`, function () {
+    const activedPin = map.querySelector('.map__pin--active');
     if (map.querySelector(`.popup`)) {
       closePopup();
-      makeCard(base);
-    } else {
-      makeCard(base);
     }
+    if (activedPin) {
+      activedPin.classList.remove('map__pin--active');
+    }
+    makeCard(base);
+    pin.classList.add('map__pin--active');
   });
 };
 
@@ -328,8 +331,10 @@ const makeAd = function (evt) {
     adPrice.setAttribute(`min`, `${TYPE_HOTEL[evt.target.value].minprice}`);
   }
 
-  if (evt.target.matches(`#price`)) {
-    if (evt.target.value < TYPE_HOTEL[adType.value].minprice) {
+  if (evt.target.matches(`#price`) || evt.target.matches(`#type`)) {
+    adPrice.setCustomValidity(``);
+    adPrice.style.boxShadow = ``;
+    if (adPrice.value < TYPE_HOTEL[adType.value].minprice) {
       evt.target.setCustomValidity(`Минимальная цена, для данного типа жилья ${TYPE_HOTEL[adType.value].minprice} руб`);
       evt.target.style.boxShadow = INPUT_SHADOW;
     }
