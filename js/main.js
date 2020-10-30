@@ -10,6 +10,47 @@
   const mainPinWidth = 65;
   const mainPinHeight = 65;
 
+  // ----------------------------------------------- Модуль перетаскивания главной кнопки.
+
+  mainPin.addEventListener(`mousedown`, function (evt) {
+    evt.preventDefault();
+
+    let startCords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    const onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      getMainPinAdress();
+
+      const shift = {
+        x: startCords.x - moveEvt.clientX,
+        y: startCords.y - moveEvt.clientY
+      };
+
+      startCords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+
+
+    };
+
+    const onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
   // -------------------------------------------------- Поиск координат главной кнопки
 
   const mainPinCenter = {
@@ -17,14 +58,16 @@
     y: mainPin.offsetTop + Math.round(mainPinHeight / 2)
   };
 
-  const mainPinArrow = {
-    x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
-    y: mainPin.offsetTop + mainPinHeight
-  };
-
   const addressField = adForm.querySelector(`#address`);
 
   const getMainPinAdress = (position) => {
+    if (position === undefined) {
+      position = {
+        x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
+        y: mainPin.offsetTop + mainPinHeight
+      };
+    }
+
     addressField.setAttribute(`value`, `${position.x}, ${position.y}`);
     addressField.setAttribute(`readonly`, `readonly`);
   };
@@ -75,7 +118,7 @@
   const activatePins = function () {
     const mapFragment = document.createDocumentFragment();
     const pinsBase = window.data.getRandomPins();
-    getMainPinAdress(mainPinArrow);
+    getMainPinAdress();
     for (let i = 0; i < pinsBase.length; i++) {
       let pin = window.data.renderElement(pinsBase[i]);
       onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
@@ -88,22 +131,22 @@
   // -------------------------------------------------------------- Вдествие с пинами на карте, при клике.
   const onClickPin = function (pin, base) {
     pin.addEventListener(`click`, function () {
-      const activedPin = map.querySelector('.map__pin--active');
+      const activedPin = map.querySelector(`.map__pin--active`);
       if (map.querySelector(`.popup`)) {
         closePopup(activedPin);
       }
       if (activedPin) {
-        activedPin.classList.remove('map__pin--active');
+        activedPin.classList.remove(`map__pin--active`);
       }
       window.card.makeCard(base);
-      pin.classList.add('map__pin--active');
+      pin.classList.add(`map__pin--active`);
     });
   };
 
   const closePopup = function () {
     map.querySelector(`.popup`).remove();
     document.removeEventListener(`keydown`, opPopuPressEsc);
-    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    map.querySelector(`.map__pin--active`).classList.remove(`map__pin--active`);
   };
 
   const opPopuPressEsc = function (evt) {
@@ -112,7 +155,7 @@
     }
   };
 
-  // ---------------------------------------------- Импорт -----
+  // ---------------------------------------------- Экспорт -----
   window.main = {
     map: map,
     closePopup: closePopup,
