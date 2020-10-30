@@ -102,24 +102,24 @@
 
   const closePopup = function () {
     map.querySelector(`.popup`).remove();
-    document.removeEventListener(`keydown`, opPopuPressEsc);
+    document.removeEventListener(`keydown`, onPopuPressEsc);
     map.querySelector('.map__pin--active').classList.remove('map__pin--active');
   };
 
-  const opPopuPressEsc = function (evt) {
+  const onPopuPressEsc = function (evt) {
     if (evt.key === `Escape`) {
       closePopup();
     }
   };
 
-  // ---------------------------------------------- Импорт -----
+  // ---------------------------------------------- Экспорт -----
   window.main = {
-    map: map,
-    closePopup: closePopup,
-    opPopuPressEsc: opPopuPressEsc,
-    adForm: adForm,
-    mapFilters: mapFilters,
-    adFormFieldset: adFormFieldset
+    map,
+    closePopup,
+    onPopuPressEsc,
+    adForm,
+    mapFilters,
+    adFormFieldset
   };
 
 })();
