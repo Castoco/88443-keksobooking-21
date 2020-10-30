@@ -14,6 +14,20 @@
   const adTimein = window.main.adForm.querySelector('#timein');
   const adTimeout = window.main.adForm.querySelector('#timeout');
 
+  const activateForm = function () {
+    window.main.map.classList.remove(`map--faded`);
+    window.main.adForm.classList.remove(`ad-form--disabled`);
+
+
+    for (let i = 0; i < window.main.adFormFieldset.length; i++) {
+      window.main.adFormFieldset[i].removeAttribute(`disabled`, `disabled`);
+    }
+
+    for (let i = 0; i < window.main.mapFilters.length; i++) {
+      window.main.mapFilters[i].removeAttribute(`disabled`, `disabled`);
+    }
+  };
+
   const makeAd = function (evt) {
     evt.target.setCustomValidity(``);
     evt.target.style.boxShadow = ``;
@@ -73,5 +87,9 @@
   };
 
   window.main.adForm.addEventListener(`input`, makeAd);
+
+  window.form = {
+    activateForm: activateForm
+  };
 
 })();
