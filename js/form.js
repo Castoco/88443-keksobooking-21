@@ -88,8 +88,9 @@
 
   window.main.adForm.addEventListener(`input`, makeAd);
 
+  // ------------------ Экспорт
   window.form = {
-    activateForm: activateForm
+    activateForm
   };
 
 })();

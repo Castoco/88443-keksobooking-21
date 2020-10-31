@@ -159,11 +159,11 @@
 
   const closePopup = function () {
     map.querySelector(`.popup`).remove();
-    document.removeEventListener(`keydown`, opPopuPressEsc);
-    map.querySelector(`.map__pin--active`).classList.remove(`map__pin--active`);
+    document.removeEventListener(`keydown`, onPopupPressEsc);
+    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
   };
 
-  const opPopuPressEsc = function (evt) {
+  const onPopupPressEsc = function (evt) {
     if (evt.key === `Escape`) {
       closePopup();
     }
@@ -171,13 +171,13 @@
 
   // ---------------------------------------------- Экспорт -----
   window.main = {
-    map: map,
-    closePopup: closePopup,
-    opPopuPressEsc: opPopuPressEsc,
-    adForm: adForm,
-    mapFilters: mapFilters,
-    adFormFieldset: adFormFieldset,
     getMainPinAdress,
+    map,
+    closePopup,
+    onPopupPressEsc,
+    adForm,
+    mapFilters,
+    adFormFieldset
   };
 
 })();

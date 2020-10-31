@@ -7,14 +7,13 @@
   const pinPopupFragment = document.createDocumentFragment();
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
-  window.card = {
-    makeCard: function (pinPopup) {
-      const card = getPinCard(pinPopup);
-      const delButton = card.querySelector(`.popup__close`);
-      window.main.map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
-      delButton.addEventListener(`click`, window.main.closePopup);
-      document.addEventListener(`keydown`, window.main.opPopuPressEsc);
-    },
+
+  const makeCard = function (pinPopup) {
+    const card = getPinCard(pinPopup);
+    const delButton = card.querySelector(`.popup__close`);
+    window.main.map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
+    delButton.addEventListener(`click`, window.main.closePopup);
+    document.addEventListener(`keydown`, window.main.opPopuPressEsc);
   };
 
 
@@ -56,6 +55,12 @@
     photoList.removeChild(photoItem);
 
     return card;
+  };
+
+  // -------------------------- Экспорт
+
+  window.card = {
+    makeCard
   };
 
 

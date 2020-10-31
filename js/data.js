@@ -73,23 +73,27 @@
     return announcement;
   };
 
-  window.data = {
-    getRandomPins: function () { // -----Сохраняю случайные пины и данные в обьект.
-      const pins = [];
-      for (let i = 1; i <= PINS_QUANTITY; i++) {
-        pins.push(randomPin(i));
-      }
-      return pins;
-    },
-    renderElement: function (render) { // -----Функция отрисовки пинов
-      const element = pinTemplate.cloneNode(true);
-      element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
-      element.querySelector(`img`).src = render.author.avatar;
-      element.querySelector(`img`).alt = render.offer.title;
+  const getRandomPins = function () { // -----Сохраняю случайные пины и данные в обьект.
+    const pins = [];
+    for (let i = 1; i <= PINS_QUANTITY; i++) {
+      pins.push(randomPin(i));
+    }
+    return pins;
+  };
 
-      return element;
-    },
-    TYPE_HOTEL: TYPE_HOTEL,
+  const renderElement = function (render) { // -----Функция отрисовки пинов
+    const element = pinTemplate.cloneNode(true);
+    element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
+    element.querySelector(`img`).src = render.author.avatar;
+    element.querySelector(`img`).alt = render.offer.title;
+
+    return element;
+  };
+
+  window.data = {
+    TYPE_HOTEL,
+    getRandomPins,
+    renderElement,
     MAP_WIDTH,
     MAP_TOP_Y,
     MAP_BOTTOM_Y
