@@ -7,8 +7,11 @@
   const adFormFieldset = adForm.querySelectorAll(`fieldset`);
   const mainPin = map.querySelector(`.map__pin--main`);
   const mapList = map.querySelector(`.map__pins`);
-  const mainPinWidth = 65;
-  const mainPinHeight = 65;
+  const MAINPINWIDTH = 65;
+  const MAINPINHEIGHT = 65;
+  const MAIN_PIN_SCALE = Math.round(MAINPINWIDTH / 2);
+  const MAP_START = 0;
+  const addressField = adForm.querySelector(`#address`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
 
@@ -22,7 +25,7 @@
 
     const onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      getMainPinAdress();
+      const arrow = getMainPinAdress();
 
       const shift = {
         x: startCords.x - moveEvt.clientX,
@@ -34,10 +37,21 @@
         y: moveEvt.clientY
       };
 
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      if (arrow.x <= MAP_START) {
+        mainPin.style.left = MAP_START - MAIN_PIN_SCALE + 'px';
+      }
+      if (arrow.x >= window.data.MAP_WIDTH) {
+        mainPin.style.left = window.data.MAP_WIDTH - MAIN_PIN_SCALE + 'px';
+      }
+      if (arrow.y <= window.data.MAP_TOP_Y) {
+        mainPin.style.top = window.data.MAP_TOP_Y - MAINPINHEIGHT + 'px';
+      }
+      if (arrow.y >= window.data.MAP_BOTTOM_Y) {
+        mainPin.style.top = window.data.MAP_BOTTOM_Y - MAINPINHEIGHT + 'px';
+      }
+
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-
-
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
     };
 
     const onMouseUp = function (upEvt) {
@@ -54,22 +68,22 @@
   // -------------------------------------------------- Поиск координат главной кнопки
 
   const mainPinCenter = {
-    x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
-    y: mainPin.offsetTop + Math.round(mainPinHeight / 2)
+    x: mainPin.offsetLeft + MAIN_PIN_SCALE,
+    y: mainPin.offsetTop + Math.round(MAINPINHEIGHT / 2)
   };
-
-  const addressField = adForm.querySelector(`#address`);
 
   const getMainPinAdress = (position) => {
     if (position === undefined) {
       position = {
-        x: mainPin.offsetLeft + Math.round(mainPinWidth / 2),
-        y: mainPin.offsetTop + mainPinHeight
+        x: mainPin.offsetLeft + MAIN_PIN_SCALE,
+        y: mainPin.offsetTop + MAINPINHEIGHT
       };
     }
 
     addressField.setAttribute(`value`, `${position.x}, ${position.y}`);
     addressField.setAttribute(`readonly`, `readonly`);
+
+    return position;
   };
 
   getMainPinAdress(mainPinCenter);
@@ -162,7 +176,8 @@
     opPopuPressEsc: opPopuPressEsc,
     adForm: adForm,
     mapFilters: mapFilters,
-    adFormFieldset: adFormFieldset
+    adFormFieldset: adFormFieldset,
+    getMainPinAdress,
   };
 
 })();

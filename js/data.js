@@ -89,8 +89,10 @@
 
       return element;
     },
-    TYPE_HOTEL: TYPE_HOTEL
-
+    TYPE_HOTEL: TYPE_HOTEL,
+    MAP_WIDTH,
+    MAP_TOP_Y,
+    MAP_BOTTOM_Y
   };
 
 }());
