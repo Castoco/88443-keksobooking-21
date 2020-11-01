@@ -14,56 +14,48 @@
   const addressField = adForm.querySelector(`#address`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
+  const movingPin = function () {
+    mainPin.addEventListener(`mousedown`, function (evt) {
+      evt.preventDefault();
 
-  mainPin.addEventListener(`mousedown`, function (evt) {
-    evt.preventDefault();
-
-    let startCords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    const onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      const arrow = getMainPinAdress();
-
-      const shift = {
-        x: startCords.x - moveEvt.clientX,
-        y: startCords.y - moveEvt.clientY
+      let startCords = {
+        x: evt.clientX,
+        y: evt.clientY
       };
 
-      startCords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+      const onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+        getMainPinAdress();
+
+        const shift = {
+          x: startCords.x - moveEvt.clientX,
+          y: startCords.y - moveEvt.clientY
+        };
+
+        startCords = {
+          x: moveEvt.clientX,
+          y: moveEvt.clientY
+        };
+
+        if (((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) >= MAP_START && ((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) <= window.data.MAP_WIDTH) {
+          mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
+        }
+        if (((mainPin.offsetTop - shift.y) + MAINPINHEIGHT) >= window.data.MAP_TOP_Y && ((mainPin.offsetTop - shift.y) + MAINPINHEIGHT) <= window.data.MAP_BOTTOM_Y) {
+          mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
+        }
       };
 
-      if (arrow.x <= MAP_START) {
-        mainPin.style.left = MAP_START - MAIN_PIN_SCALE + 'px';
-      }
-      if (arrow.x >= window.data.MAP_WIDTH) {
-        mainPin.style.left = window.data.MAP_WIDTH - MAIN_PIN_SCALE + 'px';
-      }
-      if (arrow.y <= window.data.MAP_TOP_Y) {
-        mainPin.style.top = window.data.MAP_TOP_Y - MAINPINHEIGHT + 'px';
-      }
-      if (arrow.y >= window.data.MAP_BOTTOM_Y) {
-        mainPin.style.top = window.data.MAP_BOTTOM_Y - MAINPINHEIGHT + 'px';
-      }
+      const onMouseUp = function (upEvt) {
+        upEvt.preventDefault();
 
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-    };
+        document.removeEventListener(`mousemove`, onMouseMove);
+        document.removeEventListener(`mouseup`, onMouseUp);
+      };
 
-    const onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener(`mousemove`, onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener(`mousemove`, onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
+      document.addEventListener(`mousemove`, onMouseMove);
+      document.addEventListener(`mouseup`, onMouseUp);
+    });
+  };
 
   // -------------------------------------------------- Поиск координат главной кнопки
 
@@ -133,6 +125,7 @@
     const mapFragment = document.createDocumentFragment();
     const pinsBase = window.data.getRandomPins();
     getMainPinAdress();
+    movingPin();
     for (let i = 0; i < pinsBase.length; i++) {
       let pin = window.data.renderElement(pinsBase[i]);
       onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
@@ -142,7 +135,7 @@
   };
 
 
-  // -------------------------------------------------------------- Вдествие с пинами на карте, при клике.
+  // -------------------------------------------------------------- дествие с пинами на карте, при клике.
   const onClickPin = function (pin, base) {
     pin.addEventListener(`click`, function () {
       const activedPin = map.querySelector(`.map__pin--active`);
@@ -160,7 +153,7 @@
   const closePopup = function () {
     map.querySelector(`.popup`).remove();
     document.removeEventListener(`keydown`, onPopupPressEsc);
-    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    map.querySelector(`.map__pin--active`).classList.remove(`map__pin--active`);
   };
 
   const onPopupPressEsc = function (evt) {
