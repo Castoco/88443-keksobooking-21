@@ -69,7 +69,9 @@
 
     if (evt.target.matches(`#price`) || evt.target.matches(`#type`)) {
       adPrice.setCustomValidity(``);
+      adType.setCustomValidity(``);
       adPrice.style.boxShadow = ``;
+      adType.style.boxShadow = ``;
       if (adPrice.value < window.data.TYPE_HOTEL[adType.value].minprice) {
         evt.target.setCustomValidity(`Минимальная цена, для данного типа жилья ${window.data.TYPE_HOTEL[adType.value].minprice} руб`);
         evt.target.style.boxShadow = INPUT_SHADOW;
