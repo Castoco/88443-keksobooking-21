@@ -41,7 +41,7 @@
         if (((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) >= MAP_START && ((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) <= window.data.MAP_WIDTH) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
         }
-        if (((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT) >= window.data.MAP_TOP_Y && ((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT) <= window.data.MAP_BOTTOM_Y) {
+        if (((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) >= window.data.MAP_TOP_Y && ((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) <= window.data.MAP_BOTTOM_Y) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
         }
       };
