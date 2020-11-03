@@ -93,7 +93,10 @@
   window.data = {
     TYPE_HOTEL,
     getRandomPins,
-    renderElement
+    renderElement,
+    MAP_WIDTH,
+    MAP_TOP_Y,
+    MAP_BOTTOM_Y
   };
 
 }());
