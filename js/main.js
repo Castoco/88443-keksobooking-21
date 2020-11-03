@@ -8,9 +8,10 @@
   const mainPin = map.querySelector(`.map__pin--main`);
   const mapList = map.querySelector(`.map__pins`);
   const MAINPINWIDTH = 65;
-  const MAINPINHEIGHT = 65;
+  const MAINPIN_HEIGHT = 65;
   const MAIN_PIN_SCALE = Math.round(MAINPINWIDTH / 2);
   const MAP_START = 0;
+  const PIN_SCALE_AFTER = 15;
   const addressField = adForm.querySelector(`#address`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
@@ -40,7 +41,7 @@
         if (((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) >= MAP_START && ((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) <= window.data.MAP_WIDTH) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
         }
-        if (((mainPin.offsetTop - shift.y) + MAINPINHEIGHT) >= window.data.MAP_TOP_Y && ((mainPin.offsetTop - shift.y) + MAINPINHEIGHT) <= window.data.MAP_BOTTOM_Y) {
+        if (((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT) >= window.data.MAP_TOP_Y && ((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT) <= window.data.MAP_BOTTOM_Y) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
         }
       };
@@ -57,18 +58,20 @@
     });
   };
 
+  movingPin();
+
   // -------------------------------------------------- Поиск координат главной кнопки
 
   const mainPinCenter = {
     x: mainPin.offsetLeft + MAIN_PIN_SCALE,
-    y: mainPin.offsetTop + Math.round(MAINPINHEIGHT / 2)
+    y: mainPin.offsetTop + Math.round(MAINPIN_HEIGHT / 2)
   };
 
   const getMainPinAdress = (position) => {
     if (position === undefined) {
       position = {
         x: mainPin.offsetLeft + MAIN_PIN_SCALE,
-        y: mainPin.offsetTop + MAINPINHEIGHT
+        y: mainPin.offsetTop + MAINPIN_HEIGHT + PIN_SCALE_AFTER
       };
     }
 
@@ -125,7 +128,6 @@
     const mapFragment = document.createDocumentFragment();
     const pinsBase = window.data.getRandomPins();
     getMainPinAdress();
-    movingPin();
     for (let i = 0; i < pinsBase.length; i++) {
       let pin = window.data.renderElement(pinsBase[i]);
       onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
