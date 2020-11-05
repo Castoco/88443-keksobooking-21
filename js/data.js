@@ -24,10 +24,9 @@
       'minprice': 0
     },
   };
-  const TYPES = Object.keys(TYPE_HOTEL);
 
 
-
+  /*
   const PINS_QUANTITY = 8;
 
 
@@ -45,7 +44,6 @@
   const GUESTS_MIN = 1;
   const GUESTS_MAX = 15;
 
-/*
   // ------------------------------------ Создаю случайный пин, данные для карточки
   const randomPin = function (counter) {
     const pinLocationX = window.util.getRandomNumber(MAP_START_X, MAP_WIDTH);
