@@ -6,11 +6,6 @@
   const MAP_WIDTH = 1200;
   const MAP_TOP_Y = 130;
   const MAP_BOTTOM_Y = 630;
-
-  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-
-  /*
-  const PINS_QUANTITY = 8;
   const TYPE_HOTEL = {
     'palace': {
       'name': `Дворец`,
@@ -29,14 +24,18 @@
       'minprice': 0
     },
   };
+  const TYPES = Object.keys(TYPE_HOTEL);
+
+
+
+  const PINS_QUANTITY = 8;
+
 
   const TITLE_WORDS = [`Номер`, `Хата`, `Дыра`, `Квартира`];
   const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
   const HOTEL_PHOTO = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-  const MAP_WIDTH = 1200;
+
   const MAP_START_X = 25;
-  const MAP_TOP_Y = 130;
-  const MAP_BOTTOM_Y = 630;
   const TIME_CHECKIN = 12;
   const TIME_CHECKOUT = 14;
   const MIN_PRICE = 0;
@@ -45,8 +44,8 @@
   const ROOMS_MIN = 1;
   const GUESTS_MIN = 1;
   const GUESTS_MAX = 15;
-  const TYPES = Object.keys(TYPE_HOTEL);
 
+/*
   // ------------------------------------ Создаю случайный пин, данные для карточки
   const randomPin = function (counter) {
     const pinLocationX = window.util.getRandomNumber(MAP_START_X, MAP_WIDTH);
@@ -87,6 +86,9 @@
   };
   */
 
+  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+
+
   const renderElement = function (render) { // -----Функция отрисовки пинов
     const element = pinTemplate.cloneNode(true);
     element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
@@ -97,6 +99,7 @@
   };
 
   window.data = {
+    TYPE_HOTEL,
     renderElement,
     MAP_WIDTH,
     MAP_TOP_Y,
