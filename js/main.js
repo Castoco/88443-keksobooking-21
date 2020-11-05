@@ -7,12 +7,17 @@
   const adFormFieldset = adForm.querySelectorAll(`fieldset`);
   const mainPin = map.querySelector(`.map__pin--main`);
   const mapList = map.querySelector(`.map__pins`);
+
   const MAINPINWIDTH = 65;
   const MAINPIN_HEIGHT = 65;
   const MAIN_PIN_SCALE = Math.round(MAINPINWIDTH / 2);
   const MAP_START = 0;
   const PIN_SCALE_AFTER = 15;
   const addressField = adForm.querySelector(`#address`);
+  const URL_GET = `https://21.javascript.pages.academy/keksobooking/data`;
+  const URL_POST = `https://21.javascript.pages.academy/keksobooking`;
+  const GET = `GET`;
+  const POST = `POST`;
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
   const movingPin = function () {
@@ -88,13 +93,19 @@
   const disabledPage = function () {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
-
+    const adPrice = adForm.querySelector(`#price`);
     for (let i = 0; i < adFormFieldset.length; i++) {
       adFormFieldset[i].setAttribute(`disabled`, `disabled`);
+      adPrice.value = '';
     }
 
     for (let i = 0; i < mapFilters.length; i++) {
       mapFilters[i].setAttribute(`disabled`, `disabled`);
+    }
+
+    const buttons = map.querySelectorAll(`.map__pin`);
+    for (let i = 1; i < buttons.length; i++) {
+      buttons[i].remove();
     }
   };
 
@@ -126,7 +137,16 @@
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
     getMainPinAdress();
-    window.dataServer.load(renderPins, window.util.renderErrorMesage);
+    window.dataServer.load(renderPins, window.util.renderErrorMesage, URL_GET, GET);
+  };
+
+  adForm.addEventListener(`submit`, function (evt) {
+    evt.preventDefault();
+    window.dataServer.load(same, window.util.renderErrorMesage, URL_POST, POST, new FormData(adForm));
+  });
+
+  const same = function () {
+    console.log('same');
   };
 
   const renderPins = function (pinsBase) {
@@ -174,7 +194,10 @@
     onPopupPressEsc,
     adForm,
     mapFilters,
-    adFormFieldset
+    adFormFieldset,
+    disabledPage,
+    mainPin,
+    onPinMouseDown,
   };
 
 })();
