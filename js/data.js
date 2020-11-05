@@ -3,6 +3,13 @@
 
   const PIN_WIDTH_SCALE = 25;
   const PIN_SCALE = 70;
+  const MAP_WIDTH = 1200;
+  const MAP_TOP_Y = 130;
+  const MAP_BOTTOM_Y = 630;
+
+  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+
+  /*
   const PINS_QUANTITY = 8;
   const TYPE_HOTEL = {
     'palace': {
@@ -39,8 +46,6 @@
   const GUESTS_MIN = 1;
   const GUESTS_MAX = 15;
   const TYPES = Object.keys(TYPE_HOTEL);
-
-  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   // ------------------------------------ Создаю случайный пин, данные для карточки
   const randomPin = function (counter) {
@@ -80,6 +85,7 @@
     }
     return pins;
   };
+  */
 
   const renderElement = function (render) { // -----Функция отрисовки пинов
     const element = pinTemplate.cloneNode(true);
@@ -91,8 +97,6 @@
   };
 
   window.data = {
-    TYPE_HOTEL,
-    getRandomPins,
     renderElement,
     MAP_WIDTH,
     MAP_TOP_Y,
