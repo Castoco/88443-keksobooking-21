@@ -125,25 +125,23 @@
 
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
-    const mapFragment = document.createDocumentFragment();
-    // const pinsBase = window.data.getRandomPins();
     getMainPinAdress();
-
     window.dataServer.load(function (pinsBase) {
-      for (let i = 0; i < pinsBase.length; i++) {
-        let pin = window.data.renderElement(pinsBase[i]);
-        onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
-        mapFragment.appendChild(pin);
-        mapList.appendChild(mapFragment);
-      }
+      renderPins(pinsBase);
+
     }, function (message) {
-      const fail = document.createElement('div');
-      fail.textContent = message;
-      fail.style = 'width: 100%; height: 100px; margin: 0 auto; background: red; text-align: center; top: 300px';
-      fail.style.position = 'absolute';
-      fail.style.fontSize = '30px';
-      map.append(fail);
+      window.util.renderErrorMesage(message);
     });
+  };
+
+  const renderPins = function (pinsBase) {
+    const mapFragment = document.createDocumentFragment();
+    for (let i = 0; i < pinsBase.length; i++) {
+      let pin = window.data.renderElement(pinsBase[i]);
+      onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
+      mapFragment.appendChild(pin);
+      mapList.appendChild(mapFragment);
+    }
   };
 
   // -------------------------------------------------------------- дествие с пинами на карте, при клике.
