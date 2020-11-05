@@ -126,12 +126,7 @@
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
     getMainPinAdress();
-    window.dataServer.load(function (pinsBase) {
-      renderPins(pinsBase);
-
-    }, function (message) {
-      window.util.renderErrorMesage(message);
-    });
+    window.dataServer.load(renderPins, window.util.renderErrorMesage);
   };
 
   const renderPins = function (pinsBase) {
