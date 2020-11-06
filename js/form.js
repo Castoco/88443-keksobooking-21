@@ -11,8 +11,8 @@
   const capacity = window.main.adForm.querySelector(`#capacity`);
   const adPrice = window.main.adForm.querySelector(`#price`);
   const adType = window.main.adForm.querySelector(`#type`);
-  const adTimein = window.main.adForm.querySelector('#timein');
-  const adTimeout = window.main.adForm.querySelector('#timeout');
+  const adTimein = window.main.adForm.querySelector(`#timein`);
+  const adTimeout = window.main.adForm.querySelector(`#timeout`);
 
   const activateForm = function () {
     window.main.map.classList.remove(`map--faded`);
@@ -78,10 +78,10 @@
       }
     }
 
-    if (evt.target.matches('#timein')) {
+    if (evt.target.matches(`#timein`)) {
       adTimeout.value = adTimein.value;
     }
-    if (evt.target.matches('#timeout')) {
+    if (evt.target.matches(`#timeout`)) {
       adTimein.value = adTimeout.value;
     }
 
@@ -90,9 +90,30 @@
 
   window.main.adForm.addEventListener(`input`, makeAd);
 
+  // ---------------------------- Сообщение об успешной отправке формы
+  const successPopup = document.querySelector(`#success`).content.querySelector(`.success`);
+  const succesFragment = document.createDocumentFragment();
+  const mainpage = document.querySelector(`main`);
+
+  const getSucces = function () {
+    const element = successPopup.cloneNode(true);
+    succesFragment.appendChild(element);
+    mainpage.appendChild(succesFragment);
+    document.addEventListener(`keydown`, function (evt) {
+      evt.preventDefault();
+      if (evt.key === `Escape`) {
+        // mainpage.removeChild(document.querySelector(`.success`));
+        element.remove();
+      }
+    });
+  };
+
+
   // ------------------ Экспорт
   window.form = {
-    activateForm
+    activateForm,
+    mainpage,
+    getSucces,
   };
 
 })();

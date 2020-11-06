@@ -43,9 +43,6 @@
       window.main.disabledPage();
       window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
       window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
-      if (window.main.map.querySelector(`.popup`)) {
-        window.main.map.querySelector(`.popup`).remove();
-      }
     }
   };
 

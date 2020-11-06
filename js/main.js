@@ -1,23 +1,21 @@
 'use strict';
 (function () {
-
-  const map = document.querySelector(`.map`);
-  const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
-  const adForm = document.querySelector(`.ad-form`);
-  const adFormFieldset = adForm.querySelectorAll(`fieldset`);
-  const mainPin = map.querySelector(`.map__pin--main`);
-  const mapList = map.querySelector(`.map__pins`);
-
   const MAINPINWIDTH = 65;
   const MAINPIN_HEIGHT = 65;
   const MAIN_PIN_SCALE = Math.round(MAINPINWIDTH / 2);
   const MAP_START = 0;
   const PIN_SCALE_AFTER = 15;
-  const addressField = adForm.querySelector(`#address`);
   const URL_GET = `https://21.javascript.pages.academy/keksobooking/data`;
   const URL_POST = `https://21.javascript.pages.academy/keksobooking`;
   const GET = `GET`;
   const POST = `POST`;
+  const map = document.querySelector(`.map`);
+  const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
+  const adForm = document.querySelector(`.ad-form`);
+  const addressField = adForm.querySelector(`#address`);
+  const adFormFieldset = adForm.querySelectorAll(`fieldset`);
+  const mainPin = map.querySelector(`.map__pin--main`);
+  const mapList = map.querySelector(`.map__pins`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
   const movingPin = function () {
@@ -86,17 +84,13 @@
     return position;
   };
 
-  getMainPinAdress(mainPinCenter);
-
-
   // ----------------------------------------------------------Состояние страницы до активации карты
   const disabledPage = function () {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
-    const adPrice = adForm.querySelector(`#price`);
+
     for (let i = 0; i < adFormFieldset.length; i++) {
       adFormFieldset[i].setAttribute(`disabled`, `disabled`);
-      adPrice.value = '';
     }
 
     for (let i = 0; i < mapFilters.length; i++) {
@@ -107,6 +101,10 @@
     for (let i = 1; i < buttons.length; i++) {
       buttons[i].remove();
     }
+
+    mainPin.style.top = `375px`;
+    mainPin.style.left = `570px`;
+    getMainPinAdress(mainPinCenter);
   };
 
   disabledPage();
@@ -133,21 +131,17 @@
   mainPin.addEventListener(`mousedown`, onPinMouseDown);
   mainPin.addEventListener(`keydown`, onPinKeyDown);
 
-
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
     getMainPinAdress();
     window.dataServer.load(renderPins, window.util.renderErrorMesage, URL_GET, GET);
   };
-
   adForm.addEventListener(`submit`, function (evt) {
     evt.preventDefault();
-    window.dataServer.load(same, window.util.renderErrorMesage, URL_POST, POST, new FormData(adForm));
+    window.dataServer.load(window.form.getSucces, window.util.renderErrorMesage, URL_POST, POST, new FormData(adForm));
   });
 
-  const same = function () {
-    console.log('same');
-  };
+  // -------------------------------------------------------------- дествие с пинами на карте, при клике.
 
   const renderPins = function (pinsBase) {
     const mapFragment = document.createDocumentFragment();
@@ -159,12 +153,11 @@
     }
   };
 
-  // -------------------------------------------------------------- дествие с пинами на карте, при клике.
   const onClickPin = function (pin, base) {
     pin.addEventListener(`click`, function () {
       const activedPin = map.querySelector(`.map__pin--active`);
       if (map.querySelector(`.popup`)) {
-        closePopup(activedPin);
+        closePopup();
       }
       if (activedPin) {
         activedPin.classList.remove(`map__pin--active`);
@@ -186,7 +179,7 @@
     }
   };
 
-  // ---------------------------------------------- Экспорт -----
+  // --------------------------------------------------- Экспорт -----
   window.main = {
     getMainPinAdress,
     map,
