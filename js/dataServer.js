@@ -9,6 +9,7 @@
       switch (xhr.status) {
         case 200:
           onSuccess(xhr.response);
+
           break;
 
         case 400:
@@ -38,7 +39,6 @@
       window.main.disabledPage();
       window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
       window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
-
     }
   };
 

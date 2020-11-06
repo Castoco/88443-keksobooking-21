@@ -26,8 +26,6 @@
     for (let i = 0; i < window.main.mapFilters.length; i++) {
       window.main.mapFilters[i].removeAttribute(`disabled`, `disabled`);
     }
-
-    window.main.adForm.reset();
   };
 
   const makeAd = function (evt) {
@@ -104,14 +102,16 @@
     document.addEventListener(`keydown`, function (evt) {
       evt.preventDefault();
       if (evt.key === `Escape`) {
-        // mainpage.removeChild(document.querySelector(`.success`));
         element.remove();
       }
     });
     document.addEventListener('click', function (evt) {
       evt.preventDefault();
       element.remove();
+      window.main.adForm.reset();
     });
+
+    window.main.closePopup();
   };
 
   // ---------------------------- Сообщение о неудачной отправке формы
@@ -131,7 +131,10 @@
     document.addEventListener('click', function (evt) {
       evt.preventDefault();
       element.remove();
+      window.main.adForm.reset();
     });
+
+    window.main.closePopup();
   };
 
 

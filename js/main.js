@@ -168,9 +168,15 @@
   };
 
   const closePopup = function () {
-    map.querySelector(`.popup`).remove();
+    const popup = map.querySelector(`.popup`);
+    if (popup) {
+      popup.remove();
+    }
     document.removeEventListener(`keydown`, onPopupPressEsc);
-    map.querySelector(`.map__pin--active`).classList.remove(`map__pin--active`);
+    const activedPin = map.querySelector(`.map__pin--active`);
+    if (activedPin) {
+      activedPin.classList.remove(`map__pin--active`);
+    }
   };
 
   const onPopupPressEsc = function (evt) {
