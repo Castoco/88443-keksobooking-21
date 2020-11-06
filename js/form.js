@@ -105,12 +105,11 @@
         element.remove();
       }
     });
-    document.addEventListener('click', function (evt) {
+    element.addEventListener('click', function (evt) {
       evt.preventDefault();
       element.remove();
-      window.main.adForm.reset();
     });
-
+    window.main.adForm.reset();
     window.main.closePopup();
   };
 
@@ -128,12 +127,11 @@
         element.remove();
       }
     });
-    document.addEventListener('click', function (evt) {
+    element.addEventListener('click', function (evt) {
       evt.preventDefault();
       element.remove();
-      window.main.adForm.reset();
     });
-
+    window.main.adForm.reset();
     window.main.closePopup();
   };
 
