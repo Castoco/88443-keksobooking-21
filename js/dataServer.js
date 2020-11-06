@@ -1,9 +1,9 @@
 'use strict';
 (function () {
-  const xhr = new XMLHttpRequest();
-  xhr.responseType = `json`;
 
-  const getStatus = function (onSuccess, onError) {
+  const load = function (onSuccess, onError, URL, type, data) {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
       let sms;
       switch (xhr.status) {
@@ -24,7 +24,6 @@
         default:
           sms = `${xhr.status}  + ${xhr.statusText}`;
       }
-
       if (sms) {
         onError(sms);
       }
@@ -33,16 +32,13 @@
     xhr.addEventListener(`error`, function () {
       onError(`Произошла ошибка соединения`);
     });
-  };
-
-  const load = function (onSuccess, onError, URL, type, data) {
-    getStatus(onSuccess, onError);
     xhr.open(type, URL);
     xhr.send(data);
     if (type === `POST`) {
       window.main.disabledPage();
       window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
       window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
+
     }
   };
 

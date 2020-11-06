@@ -138,7 +138,7 @@
   };
   adForm.addEventListener(`submit`, function (evt) {
     evt.preventDefault();
-    window.dataServer.load(window.form.getSucces, window.util.renderErrorMesage, URL_POST, POST, new FormData(adForm));
+    window.dataServer.load(window.form.getSucces, window.form.getError, URL_POST, POST, new FormData(adForm));
   });
 
   // -------------------------------------------------------------- дествие с пинами на карте, при клике.
