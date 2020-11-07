@@ -9,6 +9,8 @@
   const URL_POST = `https://21.javascript.pages.academy/keksobooking`;
   const GET = `GET`;
   const POST = `POST`;
+  const MAIN_PIN_TOP = `375`;
+  const MAIN_PIN_LEFT = `570`;
   const map = document.querySelector(`.map`);
   const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
   const adForm = document.querySelector(`.ad-form`);
@@ -41,10 +43,12 @@
           y: moveEvt.clientY
         };
 
-        if (((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) >= MAP_START && ((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) <= window.data.MAP_WIDTH) {
+        if (((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) >= MAP_START &&
+        ((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) <= window.data.MAP_WIDTH) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
         }
-        if (((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) >= window.data.MAP_TOP_Y && ((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) <= window.data.MAP_BOTTOM_Y) {
+        if (((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) >= window.data.MAP_TOP_Y &&
+        ((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) <= window.data.MAP_BOTTOM_Y) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
         }
       };
@@ -60,11 +64,9 @@
       document.addEventListener(`mouseup`, onMouseUp);
     });
   };
-
   movingPin();
 
   // -------------------------------------------------- Поиск координат главной кнопки
-
   const mainPinCenter = {
     x: mainPin.offsetLeft + MAIN_PIN_SCALE,
     y: mainPin.offsetTop + Math.round(MAINPIN_HEIGHT / 2)
@@ -102,13 +104,11 @@
       buttons[i].remove();
     }
 
-    mainPin.style.top = `375px`;
-    mainPin.style.left = `570px`;
+    mainPin.style.top = `${MAIN_PIN_TOP}px`;
+    mainPin.style.left = `${MAIN_PIN_LEFT}px`;
     getMainPinAdress(mainPinCenter);
   };
-
   disabledPage();
-
 
   // ---------------------------------------------- Вызываю активвацию формы и карты при кликле на главную кнопку
 
@@ -142,7 +142,6 @@
   });
 
   // -------------------------------------------------------------- дествие с пинами на карте, при клике.
-
   const renderPins = function (pinsBase) {
     const mapFragment = document.createDocumentFragment();
     for (let i = 0; i < pinsBase.length; i++) {

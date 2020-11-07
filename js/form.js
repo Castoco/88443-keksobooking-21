@@ -13,6 +13,9 @@
   const adType = window.main.adForm.querySelector(`#type`);
   const adTimein = window.main.adForm.querySelector(`#timein`);
   const adTimeout = window.main.adForm.querySelector(`#timeout`);
+  const successModal = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorModal = document.querySelector(`#error`).content.querySelector(`.error`);
+  const mainpage = document.querySelector(`main`);
 
   const activateForm = function () {
     window.main.map.classList.remove(`map--faded`);
@@ -90,22 +93,25 @@
 
   window.main.adForm.addEventListener(`input`, makeAd);
 
-  // ---------------------------- Сообщение об успешной отправке формы
-  const successPopup = document.querySelector(`#success`).content.querySelector(`.success`);
-  const succesFragment = document.createDocumentFragment();
-  const mainpage = document.querySelector(`main`);
-
+  // -------------------------------------------------------- Сообщение об успешной отправке формы
   const getSucces = function () {
-    const element = successPopup.cloneNode(true);
-    succesFragment.appendChild(element);
-    mainpage.appendChild(succesFragment);
-    document.addEventListener(`keydown`, function (evt) {
-      evt.preventDefault();
-      if (evt.key === `Escape`) {
-        element.remove();
-      }
-    });
-    element.addEventListener('click', function (evt) {
+    const element = successModal .cloneNode(true);
+    modalRender(element);
+  };
+
+  // ------------------------------------------------------- Сообщение о неудачной отправке формы
+  const getError = function () {
+    const element = errorModal.cloneNode(true);
+    modalRender(element);
+  };
+
+  // ------------------------------------------------------- Функция отрисовки модалки
+  const modalRender = function (element) {
+    const Fragment = document.createDocumentFragment();
+    Fragment.appendChild(element);
+    mainpage.appendChild(Fragment);
+    document.addEventListener(`keydown`, onModalPressEsc);
+    element.addEventListener(`click`, function (evt) {
       evt.preventDefault();
       element.remove();
     });
@@ -113,26 +119,19 @@
     window.main.closePopup();
   };
 
-  // ---------------------------- Сообщение о неудачной отправке формы
-  const errorPopup = document.querySelector(`#error`).content.querySelector(`.error`);
-  const errorFragment = document.createDocumentFragment();
-
-  const getError = function () {
-    const element = errorPopup.cloneNode(true);
-    errorFragment.appendChild(element);
-    mainpage.appendChild(errorFragment);
-    document.addEventListener(`keydown`, function (evt) {
-      evt.preventDefault();
-      if (evt.key === `Escape`) {
-        element.remove();
+  // ---------------------------------------------- Закрытие модального окна и удаление обработчика по Keydow Escape
+  const onModalPressEsc = function (evt) {
+    const succes = document.querySelector(`.success`);
+    const error = document.querySelector(`.error`);
+    if (evt.key === `Escape`) {
+      if (succes) {
+        succes.remove();
       }
-    });
-    element.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      element.remove();
-    });
-    window.main.adForm.reset();
-    window.main.closePopup();
+      if (errorModal) {
+        error.remove();
+      }
+      document.removeEventListener(`keydown`, onModalPressEsc);
+    }
   };
 
 
