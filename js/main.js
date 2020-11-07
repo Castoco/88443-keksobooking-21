@@ -134,14 +134,14 @@
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
     getMainPinAdress();
-    window.dataServer.load(renderPins, window.util.renderErrorMesage, URL_GET, GET);
+    window.dataServer.load(URL_GET, GET, renderPins, window.util.renderErrorMesage);
 
     window.form.buttonReset.addEventListener(`click`, window.form.resetForm);
   };
 
   adForm.addEventListener(`submit`, function (evt) {
     evt.preventDefault();
-    window.dataServer.load(window.form.getSucces, window.form.getError, URL_POST, POST, new FormData(adForm));
+    window.dataServer.load(URL_POST, POST, window.form.getSucces, window.form.getError, new FormData(adForm));
   });
 
 

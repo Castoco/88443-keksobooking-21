@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  const load = function (onSuccess, onError, url, method, data) {
+  const load = function (url, method, onSuccess, onError, data) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
