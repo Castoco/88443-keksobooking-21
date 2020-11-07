@@ -109,7 +109,6 @@
 
   // ------------------------------------------------------- Функция отрисовки модалки
   const modalRender = function (element) {
-    reloadPage();
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
     mainpage.appendChild(fragment);
