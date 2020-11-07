@@ -139,13 +139,13 @@
     window.main.closePopup();
     window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
     window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
-    adPrice.setAttribute(`placeholder`, `${window.data.TYPE_HOTEL[`house`].minprice}`);
   };
 
 
   const resetForm = function () {
     window.main.adForm.reset();
     reloadPage();
+    adPrice.setAttribute(`placeholder`, `${window.data.TYPE_HOTEL[`house`].minprice}`);
   };
 
 
