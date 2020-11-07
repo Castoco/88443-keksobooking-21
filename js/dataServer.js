@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  const load = function (onSuccess, onError, URL, type, data) {
+  const load = function (onSuccess, onError, url, method, data) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
@@ -33,13 +33,8 @@
     xhr.addEventListener(`error`, function () {
       onError(`Произошла ошибка соединения`);
     });
-    xhr.open(type, URL);
+    xhr.open(method, url);
     xhr.send(data);
-    if (type === `POST`) {
-      window.main.disabledPage();
-      window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
-      window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
-    }
   };
 
   window.dataServer = {

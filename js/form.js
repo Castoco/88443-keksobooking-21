@@ -6,7 +6,6 @@
   const INPUT_SHADOW = `0 0 2px 2px #ff0000`;
   const TITLE_LENGTH_MIN = 30;
   const TITLE_LENGTH_MAX = 100;
-
   const rooms = window.main.adForm.querySelector(`#room_number`);
   const capacity = window.main.adForm.querySelector(`#capacity`);
   const adPrice = window.main.adForm.querySelector(`#price`);
@@ -16,11 +15,11 @@
   const successModal = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorModal = document.querySelector(`#error`).content.querySelector(`.error`);
   const mainpage = document.querySelector(`main`);
+  const buttonReset = document.querySelector(`.ad-form__reset`);
 
   const activateForm = function () {
     window.main.map.classList.remove(`map--faded`);
     window.main.adForm.classList.remove(`ad-form--disabled`);
-
 
     for (let i = 0; i < window.main.adFormFieldset.length; i++) {
       window.main.adFormFieldset[i].removeAttribute(`disabled`, `disabled`);
@@ -34,6 +33,7 @@
   const makeAd = function (evt) {
     evt.target.setCustomValidity(``);
     evt.target.style.boxShadow = ``;
+
 
     if (evt.target.matches(`#capacity`) || evt.target.matches(`#room_number`)) {
       rooms.setCustomValidity(``);
@@ -97,6 +97,8 @@
   const getSucces = function () {
     const element = successModal .cloneNode(true);
     modalRender(element);
+    // window.main.adForm.reset();
+    resetForm();
   };
 
   // ------------------------------------------------------- Сообщение о неудачной отправке формы
@@ -107,16 +109,15 @@
 
   // ------------------------------------------------------- Функция отрисовки модалки
   const modalRender = function (element) {
-    const Fragment = document.createDocumentFragment();
-    Fragment.appendChild(element);
-    mainpage.appendChild(Fragment);
+    reloadPage();
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(element);
+    mainpage.appendChild(fragment);
     document.addEventListener(`keydown`, onModalPressEsc);
     element.addEventListener(`click`, function (evt) {
       evt.preventDefault();
       element.remove();
     });
-    window.main.adForm.reset();
-    window.main.closePopup();
   };
 
   // ---------------------------------------------- Закрытие модального окна и удаление обработчика по Keydow Escape
@@ -126,21 +127,38 @@
     if (evt.key === `Escape`) {
       if (succes) {
         succes.remove();
-      }
-      if (errorModal) {
+      } else if (errorModal) {
         error.remove();
       }
       document.removeEventListener(`keydown`, onModalPressEsc);
     }
   };
 
+  const reloadPage = function () {
+    window.main.disabledPage();
+    window.main.closePopup();
+    window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
+    window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
+    adPrice.setAttribute(`placeholder`, `${window.data.TYPE_HOTEL[`house`].minprice}`);
+  };
+
+
+  const resetForm = function () {
+    window.main.adForm.reset();
+    reloadPage();
+  };
+
 
   // ------------------ Экспорт
   window.form = {
     activateForm,
+    adPrice,
     mainpage,
     getSucces,
-    getError
+    getError,
+    buttonReset,
+    reloadPage,
+    resetForm
   };
 
 })();
