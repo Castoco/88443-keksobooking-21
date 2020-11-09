@@ -27,7 +27,6 @@
 
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-
   const renderElement = function (render) { // -----Функция отрисовки пинов
     const element = pinTemplate.cloneNode(true);
     element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;

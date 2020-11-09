@@ -1,22 +1,19 @@
 'use strict';
 (function () {
 
-  const load = function (onSuccess, onError) {
+  const load = function (url, method, onSuccess, onError, data) {
     const xhr = new XMLHttpRequest();
-    const URL = `https://21.javascript.pages.academy/keksobooking/data`;
-
-
     xhr.responseType = `json`;
-
     xhr.addEventListener(`load`, function () {
       let sms;
       switch (xhr.status) {
         case 200:
           onSuccess(xhr.response);
+
           break;
 
         case 400:
-          sms = `Неверный запрос`;
+          sms = `Неверный запрос ${xhr.status} + ${xhr.statusText}`;
           break;
         case 401:
           sms = `Пользователь не авторизован`;
@@ -28,7 +25,6 @@
         default:
           sms = `${xhr.status}  + ${xhr.statusText}`;
       }
-
       if (sms) {
         onError(sms);
       }
@@ -37,14 +33,13 @@
     xhr.addEventListener(`error`, function () {
       onError(`Произошла ошибка соединения`);
     });
-
-    xhr.open(`GET`, URL);
-    xhr.send();
-
+    xhr.open(method, url);
+    xhr.send(data);
   };
 
   window.dataServer = {
-    load,
+    load
   };
 
 }());
+
