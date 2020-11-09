@@ -14,8 +14,10 @@
   const map = document.querySelector(`.map`);
   const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
   const adForm = document.querySelector(`.ad-form`);
+  const formFilters = adForm.querySelectorAll(`select`);
+  const formInputs = adForm.querySelectorAll(`input`);
   const addressField = adForm.querySelector(`#address`);
-  const adFormFieldset = adForm.querySelectorAll(`fieldset`);
+  const adTextArea = adForm.querySelector(`textarea`);
   const mainPin = map.querySelector(`.map__pin--main`);
   const mapList = map.querySelector(`.map__pins`);
 
@@ -87,16 +89,24 @@
   };
 
   // ----------------------------------------------------------Состояние страницы до активации карты
+
+  const getInputs = function () {
+    const filters = Array.from(formFilters);
+    const adInput = Array.from(formInputs);
+    const allInputs = adInput.concat(filters);
+    allInputs.push(adTextArea);
+
+    return allInputs;
+  };
+  const inputs = getInputs();
+
   const disabledPage = function () {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
 
-    for (let i = 0; i < adFormFieldset.length; i++) {
-      adFormFieldset[i].setAttribute(`disabled`, `disabled`);
-    }
-
-    for (let i = 0; i < mapFilters.length; i++) {
-      mapFilters[i].setAttribute(`disabled`, `disabled`);
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].setAttribute(`disabled`, `disabled`);
+      inputs[i].style.boxShadow = ``;
     }
 
     const buttons = map.querySelectorAll(`.map__pin`);
@@ -196,10 +206,11 @@
     onPopupPressEsc,
     adForm,
     mapFilters,
-    adFormFieldset,
+    inputs,
     disabledPage,
     mainPin,
     onPinMouseDown,
+    getInputs
   };
 
 })();

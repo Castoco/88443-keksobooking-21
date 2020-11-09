@@ -21,12 +21,8 @@
     window.main.map.classList.remove(`map--faded`);
     window.main.adForm.classList.remove(`ad-form--disabled`);
 
-    for (let i = 0; i < window.main.adFormFieldset.length; i++) {
-      window.main.adFormFieldset[i].removeAttribute(`disabled`, `disabled`);
-    }
-
-    for (let i = 0; i < window.main.mapFilters.length; i++) {
-      window.main.mapFilters[i].removeAttribute(`disabled`, `disabled`);
+    for (let i = 0; i < window.main.inputs.length; i++) {
+      window.main.inputs[i].removeAttribute(`disabled`, `disabled`);
     }
   };
 
@@ -97,7 +93,7 @@
   const getSucces = function () {
     const element = successModal .cloneNode(true);
     modalRender(element);
-    // window.main.adForm.reset();
+    window.main.adForm.reset();
     resetForm();
   };
 
@@ -143,6 +139,7 @@
 
   const resetForm = function () {
     window.main.adForm.reset();
+    window.main.adForm.removeEventListener(`input`, makeAd);
     reloadPage();
     adPrice.setAttribute(`placeholder`, `${window.data.TYPE_HOTEL[`house`].minprice}`);
   };
@@ -157,7 +154,9 @@
     getError,
     buttonReset,
     reloadPage,
-    resetForm
+    resetForm,
+    makeAd,
+    INPUT_SHADOW,
   };
 
 })();
