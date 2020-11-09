@@ -18,6 +18,7 @@
   const formInputs = adForm.querySelectorAll(`input`);
   const addressField = adForm.querySelector(`#address`);
   const adTextArea = adForm.querySelector(`textarea`);
+  const adButton = adForm.querySelectorAll(`button`);
   const mainPin = map.querySelector(`.map__pin--main`);
   const mapList = map.querySelector(`.map__pins`);
 
@@ -94,9 +95,10 @@
     const filters = Array.from(formFilters);
     const adInput = Array.from(formInputs);
     const allInputs = adInput.concat(filters);
+    const button = Array.from(adButton);
     allInputs.push(adTextArea);
-
-    return allInputs;
+    const array = allInputs.concat(button);
+    return array;
   };
   const inputs = getInputs();
 
