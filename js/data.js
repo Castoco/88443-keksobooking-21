@@ -36,12 +36,33 @@
     return element;
   };
 
+  const PINS_COUNT = 5;
+  const mapList = window.main.map.querySelector(`.map__pins`);
+
+  const renderPins = function (pinsBase) {
+    const pins = mapList.querySelectorAll(`.map__pin`);
+
+    const mapFragment = document.createDocumentFragment();
+    for (let j = 1; j < pins.length; j++) {
+      pins[j].remove();
+    }
+    if (pinsBase.length <= PINS_COUNT) {
+      for (let i = 0; i < pinsBase.length; i++) {
+        let pin = renderElement(pinsBase[i]);
+        window.main.onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
+        mapFragment.appendChild(pin);
+        mapList.appendChild(mapFragment);
+      }
+    }
+  };
+
   window.data = {
     TYPE_HOTEL,
     renderElement,
     MAP_WIDTH,
     MAP_TOP_Y,
-    MAP_BOTTOM_Y
+    MAP_BOTTOM_Y,
+    renderPins
   };
 
 }());

@@ -9,9 +9,7 @@
       switch (xhr.status) {
         case 200:
           onSuccess(xhr.response);
-
           break;
-
         case 400:
           sms = `Неверный запрос ${xhr.status} + ${xhr.statusText}`;
           break;

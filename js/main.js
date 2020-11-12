@@ -20,7 +20,6 @@
   const adTextArea = adForm.querySelector(`textarea`);
   const adButton = adForm.querySelectorAll(`button`);
   const mainPin = map.querySelector(`.map__pin--main`);
-  const mapList = map.querySelector(`.map__pins`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
   const movingPin = function () {
@@ -146,7 +145,7 @@
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
     getMainPinAdress();
-    window.dataServer.load(URL_GET, GET, renderPins, window.util.renderErrorMesage);
+    window.dataServer.load(URL_GET, GET, window.filterMap.successHandler, window.util.renderErrorMesage);
 
     window.form.buttonReset.addEventListener(`click`, window.form.resetForm);
   };
@@ -158,15 +157,7 @@
 
 
   // -------------------------------------------------------------- дествие с пинами на карте, при клике.
-  const renderPins = function (pinsBase) {
-    const mapFragment = document.createDocumentFragment();
-    for (let i = 0; i < pinsBase.length; i++) {
-      let pin = window.data.renderElement(pinsBase[i]);
-      onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
-      mapFragment.appendChild(pin);
-      mapList.appendChild(mapFragment);
-    }
-  };
+
 
   const onClickPin = function (pin, base) {
     pin.addEventListener(`click`, function () {
@@ -202,6 +193,7 @@
 
   // --------------------------------------------------- Экспорт -----
   window.main = {
+    onClickPin,
     getMainPinAdress,
     map,
     closePopup,
