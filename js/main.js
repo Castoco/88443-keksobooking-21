@@ -94,10 +94,12 @@
     const filters = Array.from(formFilters);
     const adInput = Array.from(formInputs);
     const allInputs = adInput.concat(filters);
-    const button = Array.from(adButton);
     allInputs.push(adTextArea);
-    const array = allInputs.concat(button);
-    return array;
+    const button = Array.from(adButton);
+    const selectMap = Array.from(mapFilters);
+    const array = button.concat(selectMap);
+
+    return array.concat(allInputs);
   };
   const inputs = getInputs();
 
