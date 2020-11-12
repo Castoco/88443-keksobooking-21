@@ -13,6 +13,7 @@
   const MAIN_PIN_LEFT = `570`;
   const map = document.querySelector(`.map`);
   const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
+  const mapInputs = map.querySelector(`.map__features`).querySelectorAll(`input`);
   const adForm = document.querySelector(`.ad-form`);
   const formFilters = adForm.querySelectorAll(`select`);
   const formInputs = adForm.querySelectorAll(`input`);
@@ -93,13 +94,15 @@
   const getInputs = function () {
     const filters = Array.from(formFilters);
     const adInput = Array.from(formInputs);
-    const allInputs = adInput.concat(filters);
-    allInputs.push(adTextArea);
+    const adInputs = adInput.concat(filters);
+    adInputs.push(adTextArea);
     const button = Array.from(adButton);
+    adInputs.concat(button);
     const selectMap = Array.from(mapFilters);
-    const array = button.concat(selectMap);
+    const inputMap = Array.from(mapInputs);
+    const mapFilter = selectMap.concat(inputMap);
 
-    return array.concat(allInputs);
+    return adInputs.concat(mapFilter);
   };
   const inputs = getInputs();
 
