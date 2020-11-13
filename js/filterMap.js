@@ -3,7 +3,7 @@
   const mapFilters = document.querySelector(`.map__filters`);
   let pins = [];
   let pinType = mapFilters.querySelector(`#housing-type`);
-  let typePin = `flat`;
+  let typePin = `any`;
 
   const successHandler = function (data) {
     pins = data;
@@ -18,8 +18,13 @@
 
   const updatePins = function () {
     const someType = pins.filter(function (element) {
-      return element.offer.type === typePin;
+      if (typePin === `any`) {
+        return element;
+      } else {
+        return element.offer.type === typePin;
+      }
     });
+
     window.data.renderPins(someType);
   };
 

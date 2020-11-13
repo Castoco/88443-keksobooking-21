@@ -36,23 +36,25 @@
     return element;
   };
 
-  const PINS_COUNT = 5;
+
   const mapList = window.main.map.querySelector(`.map__pins`);
 
   const renderPins = function (pinsBase) {
-    const pins = mapList.querySelectorAll(`.map__pin`);
-
+    const pins = mapList.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    let pinsCount = 5;
     const mapFragment = document.createDocumentFragment();
-    for (let j = 1; j < pins.length; j++) {
+    for (let j = 0; j < pins.length; j++) {
       pins[j].remove();
     }
-    if (pinsBase.length <= PINS_COUNT) {
-      for (let i = 0; i < pinsBase.length; i++) {
-        let pin = renderElement(pinsBase[i]);
-        window.main.onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
-        mapFragment.appendChild(pin);
-        mapList.appendChild(mapFragment);
-      }
+    if (pinsBase.length <= pinsCount) {
+      pinsCount = pinsBase.length;
+    }
+
+    for (let i = 0; i < pinsCount; i++) {
+      let pin = renderElement(pinsBase[i]);
+      window.main.onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
+      mapFragment.appendChild(pin);
+      mapList.appendChild(mapFragment);
     }
   };
 
