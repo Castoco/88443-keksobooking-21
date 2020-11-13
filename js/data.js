@@ -24,7 +24,8 @@
       'minprice': 0
     },
   };
-
+  const PINS_COUNT = 5;
+  const mapList = window.main.map.querySelector(`.map__pins`);
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   const renderElement = function (render) { // -----Функция отрисовки пинов
@@ -36,21 +37,17 @@
     return element;
   };
 
-
-  const mapList = window.main.map.querySelector(`.map__pins`);
-
   const renderPins = function (pinsBase) {
     const pins = mapList.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    let pinsCount = 5;
     const mapFragment = document.createDocumentFragment();
+
     for (let j = 0; j < pins.length; j++) {
       pins[j].remove();
     }
-    if (pinsBase.length <= pinsCount) {
-      pinsCount = pinsBase.length;
-    }
 
-    for (let i = 0; i < pinsCount; i++) {
+    const pinsLength = (pinsBase.length > PINS_COUNT) ? PINS_COUNT : pinsBase.length;
+
+    for (let i = 0; i < pinsLength; i++) {
       let pin = renderElement(pinsBase[i]);
       window.main.onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
       mapFragment.appendChild(pin);

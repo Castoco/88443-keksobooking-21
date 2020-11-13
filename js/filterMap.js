@@ -18,11 +18,7 @@
 
   const updatePins = function () {
     const someType = pins.filter(function (element) {
-      if (typePin === `any`) {
-        return element;
-      } else {
-        return element.offer.type === typePin;
-      }
+      return (typePin === `any`) ? element : element.offer.type === typePin;
     });
 
     window.data.renderPins(someType);
