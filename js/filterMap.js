@@ -35,7 +35,7 @@
       let isPrice = true;
       let isRoom = true;
       let isGuests = true;
-      let isFeatures = true;
+      // let isFeatures = true;
 
       if (typePin !== `any`) {
         isType = element.offer.type === typePin;
@@ -53,14 +53,15 @@
         isGuests = getGuests(element.offer.guests) === guests;
       }
 
-      if (features !== `any`) {
+      /* if (features !== `any`) {
         isFeatures = element.offer.features === getFeatures(features);
         console.log(getFeatures(features));
         console.log(element.offer.features);
       }
+      */
 
 
-      return isType && isPrice && isRoom && isGuests && isFeatures;
+      return isType && isPrice && isRoom && isGuests;
     });
     window.data.renderPins(someType);
   };
