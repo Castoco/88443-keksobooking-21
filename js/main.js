@@ -13,6 +13,7 @@
   const MAIN_PIN_LEFT = `570`;
   const map = document.querySelector(`.map`);
   const mapFilters = map.querySelector(`.map__filters`).querySelectorAll(`select`);
+  const mapInputs = map.querySelector(`.map__features`).querySelectorAll(`input`);
   const adForm = document.querySelector(`.ad-form`);
   const formFilters = adForm.querySelectorAll(`select`);
   const formInputs = adForm.querySelectorAll(`input`);
@@ -20,7 +21,6 @@
   const adTextArea = adForm.querySelector(`textarea`);
   const adButton = adForm.querySelectorAll(`button`);
   const mainPin = map.querySelector(`.map__pin--main`);
-  const mapList = map.querySelector(`.map__pins`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
   const movingPin = function () {
@@ -94,11 +94,15 @@
   const getInputs = function () {
     const filters = Array.from(formFilters);
     const adInput = Array.from(formInputs);
-    const allInputs = adInput.concat(filters);
+    const adInputs = adInput.concat(filters);
+    adInputs.push(adTextArea);
     const button = Array.from(adButton);
-    allInputs.push(adTextArea);
-    const array = allInputs.concat(button);
-    return array;
+    adInputs.concat(button);
+    const selectMap = Array.from(mapFilters);
+    const inputMap = Array.from(mapInputs);
+    const mapFilter = selectMap.concat(inputMap);
+
+    return adInputs.concat(mapFilter);
   };
   const inputs = getInputs();
 
@@ -146,7 +150,7 @@
   // ---------------------------------------------------------------- Функция активации пинов
   const activatePins = function () {
     getMainPinAdress();
-    window.dataServer.load(URL_GET, GET, renderPins, window.util.renderErrorMesage);
+    window.dataServer.load(URL_GET, GET, window.filterMap.successHandler, window.util.renderErrorMesage);
 
     window.form.buttonReset.addEventListener(`click`, window.form.resetForm);
   };
@@ -158,15 +162,7 @@
 
 
   // -------------------------------------------------------------- дествие с пинами на карте, при клике.
-  const renderPins = function (pinsBase) {
-    const mapFragment = document.createDocumentFragment();
-    for (let i = 0; i < pinsBase.length; i++) {
-      let pin = window.data.renderElement(pinsBase[i]);
-      onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
-      mapFragment.appendChild(pin);
-      mapList.appendChild(mapFragment);
-    }
-  };
+
 
   const onClickPin = function (pin, base) {
     pin.addEventListener(`click`, function () {
@@ -202,6 +198,7 @@
 
   // --------------------------------------------------- Экспорт -----
   window.main = {
+    onClickPin,
     getMainPinAdress,
     map,
     closePopup,

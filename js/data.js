@@ -24,7 +24,8 @@
       'minprice': 0
     },
   };
-
+  const PINS_COUNT = 5;
+  const mapList = window.main.map.querySelector(`.map__pins`);
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   const renderElement = function (render) { // -----Функция отрисовки пинов
@@ -36,12 +37,31 @@
     return element;
   };
 
+  const renderPins = function (pinsBase) {
+    const pins = mapList.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    const mapFragment = document.createDocumentFragment();
+
+    for (let j = 0; j < pins.length; j++) {
+      pins[j].remove();
+    }
+
+    const pinsLength = (pinsBase.length > PINS_COUNT) ? PINS_COUNT : pinsBase.length;
+
+    for (let i = 0; i < pinsLength; i++) {
+      let pin = renderElement(pinsBase[i]);
+      window.main.onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
+      mapFragment.appendChild(pin);
+      mapList.appendChild(mapFragment);
+    }
+  };
+
   window.data = {
     TYPE_HOTEL,
     renderElement,
     MAP_WIDTH,
     MAP_TOP_Y,
-    MAP_BOTTOM_Y
+    MAP_BOTTOM_Y,
+    renderPins
   };
 
 }());

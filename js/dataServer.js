@@ -1,24 +1,29 @@
 'use strict';
 (function () {
 
+  const CODE = {
+    ok: 200,
+    BadRequest: 400,
+    Unauthorized: 401,
+    NotFound: 404
+  };
+
   const load = function (url, method, onSuccess, onError, data) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
       let sms;
       switch (xhr.status) {
-        case 200:
+        case CODE.ok:
           onSuccess(xhr.response);
-
           break;
-
-        case 400:
+        case CODE.BadRequest:
           sms = `Неверный запрос ${xhr.status} + ${xhr.statusText}`;
           break;
-        case 401:
+        case CODE.Unauthorized:
           sms = `Пользователь не авторизован`;
           break;
-        case 404:
+        case CODE.NotFound:
           sms = `Ничего не найдено`;
           break;
 
