@@ -6,12 +6,7 @@
   const pinPrice = mapFilters.querySelector(`#housing-price`);
   const pinRooms = mapFilters.querySelector(`#housing-rooms`);
   const pinGuests = mapFilters.querySelector(`#housing-guests`);
-  let features = `any`;
 
-  let typePin = `any`;
-  let price = `any`;
-  let rooms = `any`;
-  let guests = `any`;
 
   const successHandler = function (data) {
     pins = data;
@@ -19,23 +14,31 @@
   };
 
   const updateData = function () {
-    typePin = pinType.value;
-    price = pinPrice.value;
-    rooms = pinRooms.value;
-    guests = pinGuests.value;
-    features = Array.from(document.querySelectorAll(`.map__checkbox:checked`));
+
+
     updatePins();
     window.main.closePopup();
   };
 
   const updatePins = function () {
+    let features = [];
+    let typePin = `any`;
+    let price = `any`;
+    let rooms = `any`;
+    let guests = `any`;
+
+    typePin = pinType.value;
+    price = pinPrice.value;
+    rooms = pinRooms.value;
+    guests = pinGuests.value;
+    features = Array.from(document.querySelectorAll(`.map__checkbox:checked`));
 
     const someType = pins.filter(function (element) {
       let isType = true;
       let isPrice = true;
       let isRoom = true;
       let isGuests = true;
-      // let isFeatures = true;
+      let isFeatures = true;
 
       if (typePin !== `any`) {
         isType = element.offer.type === typePin;
@@ -53,28 +56,27 @@
         isGuests = getGuests(element.offer.guests) === guests;
       }
 
-      /* if (features !== `any`) {
-        isFeatures = element.offer.features === getFeatures(features);
-        console.log(getFeatures(features));
-        console.log(element.offer.features);
+      if (features.length > 0) {
+        isFeatures = getFeatures(element.offer.features, features);
+        console.log(isFeatures);
       }
-      */
 
-
-      return isType && isPrice && isRoom && isGuests;
+      return isType && isPrice && isRoom && isGuests && isFeatures;
     });
     window.data.renderPins(someType);
   };
 
   mapFilters.addEventListener(`change`, updateData);
 
-  const getFeatures = function (arr) {
-    let featureValue = [];
-    for (let i = 0; i < arr.length; i++) {
-      featureValue.push(arr[i].value);
+  const getFeatures = function (element, features) {
+    let flag = true;
+    for (let i = 0; i < features.length; i++) {
+      if (!element.includes(features[i].value)) {
+        flag = false;
+      }
     }
 
-    return featureValue;
+    return flag;
   };
 
   const getPrices = function (value) {
