@@ -1,11 +1,17 @@
 'use strict';
 (function () {
   const mapFilters = document.querySelector(`.map__filters`);
-  let pins = [];
   const pinType = mapFilters.querySelector(`#housing-type`);
   const pinPrice = mapFilters.querySelector(`#housing-price`);
   const pinRooms = mapFilters.querySelector(`#housing-rooms`);
   const pinGuests = mapFilters.querySelector(`#housing-guests`);
+  const MIN_PRICE = 10000;
+  const HIGH_PRICE = 50000;
+  const MIN_ROOM = 0;
+  const MAX_ROOM = 3;
+  const NOT_GUESTS = 0;
+  const MAX_GUESTS = 2;
+  let pins = [];
 
 
   const successHandler = function (data) {
@@ -14,8 +20,6 @@
   };
 
   const updateData = function () {
-
-
     updatePins();
     window.main.closePopup();
   };
@@ -58,7 +62,6 @@
 
       if (features.length > 0) {
         isFeatures = getFeatures(element.offer.features, features);
-        console.log(isFeatures);
       }
 
       return isType && isPrice && isRoom && isGuests && isFeatures;
@@ -75,19 +78,18 @@
         flag = false;
       }
     }
-
     return flag;
   };
 
   const getPrices = function (value) {
     let cost = `any`;
-    if (value >= 10000 || value <= 50000) {
+    if (value >= MIN_PRICE || value <= HIGH_PRICE) {
       cost = `middle`;
     }
-    if (value < 10000) {
+    if (value < MIN_PRICE) {
       cost = `low`;
     }
-    if (value > 50000) {
+    if (value > HIGH_PRICE) {
       cost = `high`;
     }
     return cost;
@@ -95,7 +97,7 @@
 
   const getRooms = function (value) {
     let offerRoom = String(value);
-    if (value > 3 || value <= 0) {
+    if (value > MAX_ROOM || value <= MIN_ROOM) {
       offerRoom = `any`;
     }
     return offerRoom;
@@ -103,7 +105,7 @@
 
   const getGuests = function (value) {
     let offerGuests = String(value);
-    if (value > 2 || value < 0) {
+    if (value > MAX_GUESTS || value < NOT_GUESTS) {
       offerGuests = `any`;
     }
     return offerGuests;
