@@ -7,7 +7,9 @@
   const PIN_SCALE_AFTER = 15;
   const adForm = document.querySelector(`.ad-form`);
   const addressField = adForm.querySelector(`#address`);
-  const mainPin = document.querySelector(`.map__pin--main`);
+  const map = document.querySelector(`.map`);
+  const mainPin = map.querySelector(`.map__pin--main`);
+
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
   const movingPin = function () {
     mainPin.addEventListener(`mousedown`, function (evt) {
@@ -79,7 +81,8 @@
     mainPinCenter,
     movingPin,
     getMainPinAdress,
-    adForm
+    adForm,
+    map
   };
 
 

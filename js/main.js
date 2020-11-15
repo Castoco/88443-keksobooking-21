@@ -7,7 +7,7 @@
   const POST = `POST`;
   const MAIN_PIN_TOP = `375`;
   const MAIN_PIN_LEFT = `570`;
-  const map = document.querySelector(`.map`);
+  const map = window.moving.map;
   const mapSelects = map.querySelector(`.map__filters`).querySelectorAll(`select`);
   const mapInputs = map.querySelector(`.map__features`).querySelectorAll(`input`);
   const adForm = window.moving.adForm;

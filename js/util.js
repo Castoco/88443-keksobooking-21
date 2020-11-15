@@ -22,10 +22,22 @@
     window.main.map.append(fail);
   };
 
+  const DEBOUNCE_INTERVAL = 1000; // ms
+
+  const lastTimeout = null;
+
+  const debounce = function (cb) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
+  };
+
   window.util = {
     getRandomNumber,
     getStrRandom,
-    renderErrorMesage
+    renderErrorMesage,
+    debounce
   };
 
 })();

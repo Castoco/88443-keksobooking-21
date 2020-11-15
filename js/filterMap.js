@@ -20,6 +20,7 @@
   };
 
   const updateData = function () {
+    window.util.debounce(updatePins);
     updatePins();
     window.main.closePopup();
   };
