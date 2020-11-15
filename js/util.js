@@ -24,7 +24,7 @@
 
   const DEBOUNCE_INTERVAL = 1000; // ms
 
-  const lastTimeout = null;
+  let lastTimeout = null;
 
   const debounce = function (cb) {
     if (lastTimeout) {
