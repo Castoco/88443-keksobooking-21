@@ -7,6 +7,7 @@
   const POST = `POST`;
   const MAIN_PIN_TOP = `375`;
   const MAIN_PIN_LEFT = `570`;
+  const LEFT_MOUSE_BUTTON = 1;
   const map = window.moving.map;
   const mapSelects = map.querySelector(`.map__filters`).querySelectorAll(`select`);
   const mapInputs = map.querySelector(`.map__features`).querySelectorAll(`input`);
@@ -56,7 +57,7 @@
   // ---------------------------------------------- Вызываю активвацию формы и карты при кликле на главную кнопку
 
   const onPinMouseDown = function (evt) {
-    if (evt.which === 1) {
+    if (evt.which === LEFT_MOUSE_BUTTON) {
       activatePins();
       window.form.activateForm();
     }
