@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  const DEBOUNCE_INTERVAL = 500; // ms
 
   const getRandomNumber = function (min, max) { // ------------------ случайные числа
     min = Math.ceil(min);
@@ -21,8 +22,6 @@
     fail.style.fontSize = `30px`;
     window.main.map.append(fail);
   };
-
-  const DEBOUNCE_INTERVAL = 500; // ms
 
   let lastTimeout = null;
 
