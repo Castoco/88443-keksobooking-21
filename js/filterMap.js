@@ -112,6 +112,7 @@
   };
 
   window.filterMap = {
-    successHandler
+    successHandler,
+    mapFilters
   };
 }());
