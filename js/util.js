@@ -22,7 +22,7 @@
     window.main.map.append(fail);
   };
 
-  const DEBOUNCE_INTERVAL = 1000; // ms
+  const DEBOUNCE_INTERVAL = 500; // ms
 
   let lastTimeout = null;
 
