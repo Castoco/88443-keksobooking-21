@@ -140,7 +140,6 @@
   const resetForm = function () {
     window.main.adForm.reset();
     window.filterMap.mapFilters.reset();
-    window.main.adForm.removeEventListener(`input`, makeAd);
     reloadPage();
     adPrice.setAttribute(`placeholder`, `${window.data.TYPE_HOTEL[`house`].minprice}`);
   };
