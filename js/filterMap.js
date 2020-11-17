@@ -26,48 +26,27 @@
   };
 
   const updatePins = function () {
-    let features = [];
-    let typePin = `any`;
-    let price = `any`;
-    let rooms = `any`;
-    let guests = `any`;
+    let status = {
+      features: [],
+      typePin: `any`,
+      price: `any`,
+      rooms: `any`,
+      guests: `any`,
+    };
 
-    typePin = pinType.value;
-    price = pinPrice.value;
-    rooms = pinRooms.value;
-    guests = pinGuests.value;
-    features = Array.from(document.querySelectorAll(`.map__checkbox:checked`));
+    status.typePin = pinType.value;
+    status.price = pinPrice.value;
+    status.rooms = pinRooms.value;
+    status.guests = pinGuests.value;
+    status.features = Array.from(document.querySelectorAll(`.map__checkbox:checked`));
 
     let succsessPin = [];
 
     for (let i = 0; i < pins.length && succsessPin.length < window.data.PINS_COUNT; i++) {
-      let isType = true;
-      let isPrice = true;
-      let isRoom = true;
-      let isGuests = true;
-      let isFeatures = true;
-
-      if (typePin !== DEFAULT_STATUS) {
-        isType = pins[i].offer.type === typePin;
-      }
-      if (price !== DEFAULT_STATUS) {
-        isPrice = getPrices(pins[i].offer.price) === price;
-      }
-      if (rooms !== DEFAULT_STATUS) {
-        isRoom = getRooms(pins[i].offer.rooms) === rooms;
-      }
-
-      if (guests !== DEFAULT_STATUS) {
-        isGuests = getGuests(pins[i].offer.guests) === guests;
-      }
-
-      if (features.length > 0) {
-        isFeatures = getFeatures(pins[i].offer.features, features);
-      }
-
-      if (isType && isPrice && isRoom && isGuests && isFeatures) {
+      if (checkFilter(pins[i], status)) {
         succsessPin.push(pins[i]);
       }
+
     }
     window.data.renderPins(succsessPin);
   };
@@ -82,6 +61,31 @@
       }
     }
     return flag;
+  };
+
+  const checkFilter = function (element, status) {
+    let isType = true;
+    let isPrice = true;
+    let isRoom = true;
+    let isGuests = true;
+    let isFeatures = true;
+
+    if (status.typePin !== DEFAULT_STATUS) {
+      isType = element.offer.type === status.typePin;
+    }
+    if (status.price !== DEFAULT_STATUS) {
+      isPrice = getPrices(element.offer.price) === status.price;
+    }
+    if (status.rooms !== DEFAULT_STATUS) {
+      isRoom = getRooms(element.offer.rooms) === status.rooms;
+    }
+    if (status.guests !== DEFAULT_STATUS) {
+      isGuests = getGuests(element.offer.guests) === status.guests;
+    }
+    if (status.features.length > 0) {
+      isFeatures = getFeatures(element.offer.features, status.features);
+    }
+    return isType && isPrice && isRoom && isGuests && isFeatures;
   };
 
   const getPrices = function (value) {
