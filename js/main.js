@@ -112,14 +112,16 @@
     if (popup) {
       popup.remove();
     }
-    document.removeEventListener(`keydown`, closePopup);
+    document.removeEventListener(`keydown`, onCardPessEsc);
     const activedPin = map.querySelector(`.map__pin--active`);
     if (activedPin) {
       activedPin.classList.remove(`map__pin--active`);
     }
   };
 
-  window.onModalPressEsc = (closePopup);
+  const onCardPessEsc = (evt) => {
+    window.util.onModalPressEsc(evt, closePopup);
+  };
 
   // --------------------------------------------------- Экспорт -----
   window.main = {
@@ -131,7 +133,8 @@
     disabledPage,
     mainPin,
     onPinMouseDown,
-    getInputs
+    getInputs,
+    onCardPessEsc
   };
 
 })();

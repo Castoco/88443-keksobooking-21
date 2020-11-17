@@ -13,7 +13,7 @@
     const delButton = card.querySelector(`.popup__close`);
     window.main.map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
     delButton.addEventListener(`click`, window.main.closePopup);
-    document.addEventListener(`keydown`, window.main.closePopup);
+    document.addEventListener(`keydown`, window.main.onCardPessEsc);
   };
 
 

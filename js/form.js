@@ -108,7 +108,7 @@
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
     mainpage.appendChild(fragment);
-    document.addEventListener(`keydown`, modalClose);
+    document.addEventListener(`keydown`, window.onModalPressEsc);
     element.addEventListener(`click`, function (evt) {
       evt.preventDefault();
       element.remove();
@@ -127,7 +127,7 @@
     document.removeEventListener(`keydown`, window.onModalPressEsc);
   };
 
-  window.onModalPressEsc = (modalClose);
+  window.util.onModalPressEsc(modalClose);
 
   const reloadPage = function () {
     window.main.disabledPage();
