@@ -11,7 +11,7 @@
   const pinPrice = mapFilters.querySelector(`#housing-price`);
   const pinRooms = mapFilters.querySelector(`#housing-rooms`);
   const pinGuests = mapFilters.querySelector(`#housing-guests`);
-  const defaultStatus = `any`;
+  const DEFAULT_STATUS = `any`;
   let pins = [];
 
 
@@ -38,26 +38,26 @@
     guests = pinGuests.value;
     features = Array.from(document.querySelectorAll(`.map__checkbox:checked`));
 
-    let sucsesPin = [];
+    let succsessPin = [];
 
-    for (let i = 0; i <= pins.length; i++) {
+    for (let i = 0; i < pins.length && succsessPin.length < window.data.PINS_COUNT; i++) {
       let isType = true;
       let isPrice = true;
       let isRoom = true;
       let isGuests = true;
       let isFeatures = true;
 
-      if (typePin !== defaultStatus) {
+      if (typePin !== DEFAULT_STATUS) {
         isType = pins[i].offer.type === typePin;
       }
-      if (price !== defaultStatus) {
+      if (price !== DEFAULT_STATUS) {
         isPrice = getPrices(pins[i].offer.price) === price;
       }
-      if (rooms !== defaultStatus) {
+      if (rooms !== DEFAULT_STATUS) {
         isRoom = getRooms(pins[i].offer.rooms) === rooms;
       }
 
-      if (guests !== defaultStatus) {
+      if (guests !== DEFAULT_STATUS) {
         isGuests = getGuests(pins[i].offer.guests) === guests;
       }
 
@@ -66,15 +66,10 @@
       }
 
       if (isType && isPrice && isRoom && isGuests && isFeatures) {
-        sucsesPin.push(pins[i]);
+        succsessPin.push(pins[i]);
       }
-
-      if (sucsesPin.length === 5) {
-        break;
-      }
-
     }
-    window.data.renderPins(sucsesPin);
+    window.data.renderPins(succsessPin);
   };
 
   mapFilters.addEventListener(`change`, updateData);
