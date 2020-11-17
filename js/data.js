@@ -61,7 +61,8 @@
     MAP_WIDTH,
     MAP_TOP_Y,
     MAP_BOTTOM_Y,
-    renderPins
+    renderPins,
+    PINS_COUNT
   };
 
 }());

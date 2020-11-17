@@ -1,8 +1,8 @@
 'use strict';
 (function () {
-  const MAINPINWIDTH = 65;
-  const MAINPIN_HEIGHT = 65;
-  const MAIN_PIN_SCALE = Math.round(MAINPINWIDTH / 2);
+  const MAIN_PIN_WIDTH = 65;
+  const MAIN_PIN_HEIGHT = 65;
+  const MAIN_PIN_SCALE = Math.round(MAIN_PIN_WIDTH / 2);
   const MAP_START = 0;
   const PIN_SCALE_AFTER = 15;
   const adForm = document.querySelector(`.ad-form`);
@@ -38,8 +38,8 @@
           ((mainPin.offsetLeft - shift.x) + MAIN_PIN_SCALE) <= window.data.MAP_WIDTH) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
         }
-        if (((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) >= window.data.MAP_TOP_Y &&
-          ((mainPin.offsetTop - shift.y) + MAINPIN_HEIGHT + PIN_SCALE_AFTER) <= window.data.MAP_BOTTOM_Y) {
+        if (((mainPin.offsetTop - shift.y) + MAIN_PIN_HEIGHT + PIN_SCALE_AFTER) >= window.data.MAP_TOP_Y &&
+          ((mainPin.offsetTop - shift.y) + MAIN_PIN_HEIGHT + PIN_SCALE_AFTER) <= window.data.MAP_BOTTOM_Y) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
         }
       };
@@ -60,14 +60,14 @@
   // -------------------------------------------------- Поиск координат главной кнопки
   const mainPinCenter = {
     x: mainPin.offsetLeft + MAIN_PIN_SCALE,
-    y: mainPin.offsetTop + Math.round(MAINPIN_HEIGHT / 2)
+    y: mainPin.offsetTop + Math.round(MAIN_PIN_HEIGHT / 2)
   };
 
   const getMainPinAdress = (position) => {
-    if (position === undefined) {
+    if (!position) {
       position = {
         x: mainPin.offsetLeft + MAIN_PIN_SCALE,
-        y: mainPin.offsetTop + MAINPIN_HEIGHT + PIN_SCALE_AFTER
+        y: mainPin.offsetTop + MAIN_PIN_HEIGHT + PIN_SCALE_AFTER
       };
     }
 

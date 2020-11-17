@@ -25,12 +25,12 @@
     const adInputs = adInput.concat(filters);
     adInputs.push(adTextArea);
     const button = Array.from(adButton);
-    adInputs.concat(button);
+    const formInputsButtons = adInputs.concat(button);
     const selectMap = Array.from(mapSelects);
     const inputMap = Array.from(mapInputs);
     const mapFilter = selectMap.concat(inputMap);
 
-    return adInputs.concat(mapFilter);
+    return formInputsButtons .concat(mapFilter);
   };
   const inputs = getInputs();
 
@@ -59,7 +59,7 @@
   const onPinMouseDown = function (evt) {
     if (evt.which === LEFT_MOUSE_BUTTON) {
       activatePins();
-      window.form.activateForm();
+      window.form.activate();
     }
     mainPin.removeEventListener(`mousedown`, onPinMouseDown);
   };
@@ -67,9 +67,9 @@
   const onPinKeyDown = function (evt) {
     if (evt.key === `Enter`) {
       activatePins();
-      window.form.activateForm();
+      window.form.activate();
+      mainPin.removeEventListener(`keydown`, onPinKeyDown);
     }
-    mainPin.removeEventListener(`keydown`, onPinKeyDown);
   };
 
   mainPin.addEventListener(`mousedown`, onPinMouseDown);
@@ -80,7 +80,7 @@
     window.moving.getMainPinAdress();
     window.dataServer.load(URL_GET, GET, window.filterMap.successHandler, window.util.renderErrorMesage);
 
-    window.form.buttonReset.addEventListener(`click`, window.form.resetForm);
+    window.form.buttonReset.addEventListener(`click`, window.form.reset);
   };
 
   adForm.addEventListener(`submit`, function (evt) {
@@ -101,7 +101,7 @@
       if (activedPin) {
         activedPin.classList.remove(`map__pin--active`);
       }
-      window.card.makeCard(base);
+      window.card.makeOffer(base);
       pin.classList.add(`map__pin--active`);
     });
   };

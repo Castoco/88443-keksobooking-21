@@ -8,7 +8,7 @@
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
 
-  const makeCard = function (pinPopup) {
+  const makeOffer = function (pinPopup) {
     const card = getPinCard(pinPopup);
     const delButton = card.querySelector(`.popup__close`);
     window.main.map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
@@ -60,7 +60,7 @@
   // -------------------------- Экспорт
 
   window.card = {
-    makeCard
+    makeOffer
   };
 
 

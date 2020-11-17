@@ -11,6 +11,7 @@
   const pinPrice = mapFilters.querySelector(`#housing-price`);
   const pinRooms = mapFilters.querySelector(`#housing-rooms`);
   const pinGuests = mapFilters.querySelector(`#housing-guests`);
+  const defaultStatus = `any`;
   let pins = [];
 
 
@@ -37,36 +38,43 @@
     guests = pinGuests.value;
     features = Array.from(document.querySelectorAll(`.map__checkbox:checked`));
 
-    const someType = pins.filter(function (element) {
+    let sucsesPin = [];
+
+    for (let i = 0; i <= pins.length; i++) {
       let isType = true;
       let isPrice = true;
       let isRoom = true;
       let isGuests = true;
       let isFeatures = true;
 
-      if (typePin !== `any`) {
-        isType = element.offer.type === typePin;
+      if (typePin !== defaultStatus) {
+        isType = pins[i].offer.type === typePin;
+      }
+      if (price !== defaultStatus) {
+        isPrice = getPrices(pins[i].offer.price) === price;
+      }
+      if (rooms !== defaultStatus) {
+        isRoom = getRooms(pins[i].offer.rooms) === rooms;
       }
 
-      if (price !== `any`) {
-        isPrice = getPrices(element.offer.price) === price;
-      }
-
-      if (rooms !== `any`) {
-        isRoom = getRooms(element.offer.rooms) === rooms;
-      }
-
-      if (guests !== `any`) {
-        isGuests = getGuests(element.offer.guests) === guests;
+      if (guests !== defaultStatus) {
+        isGuests = getGuests(pins[i].offer.guests) === guests;
       }
 
       if (features.length > 0) {
-        isFeatures = getFeatures(element.offer.features, features);
+        isFeatures = getFeatures(pins[i].offer.features, features);
       }
 
-      return isType && isPrice && isRoom && isGuests && isFeatures;
-    });
-    window.data.renderPins(someType);
+      if (isType && isPrice && isRoom && isGuests && isFeatures) {
+        sucsesPin.push(pins[i]);
+      }
+
+      if (sucsesPin.length === 5) {
+        break;
+      }
+
+    }
+    window.data.renderPins(sucsesPin);
   };
 
   mapFilters.addEventListener(`change`, updateData);

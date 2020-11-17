@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  const MAXROOMS = 100;
-  const NOTGUESTS = 0;
+  const MAX_ROOMS = 100;
+  const NOT_GUESTS = 0;
   const INPUT_SHADOW = `0 0 2px 2px #ff0000`;
   const TITLE_LENGTH_MIN = 30;
   const TITLE_LENGTH_MAX = 100;
@@ -17,7 +17,7 @@
   const mainpage = document.querySelector(`main`);
   const buttonReset = document.querySelector(`.ad-form__reset`);
 
-  const activateForm = function () {
+  const activate = function () {
     window.main.map.classList.remove(`map--faded`);
     window.main.adForm.classList.remove(`ad-form--disabled`);
 
@@ -36,8 +36,8 @@
       rooms.style.boxShadow = ``;
       capacity.setCustomValidity(``);
       capacity.style.boxShadow = ``;
-      if (parseInt(rooms.value, 10) !== MAXROOMS && parseInt(capacity.value, 10) === NOTGUESTS
-    || parseInt(rooms.value, 10) === MAXROOMS && parseInt(capacity.value, 10) !== NOTGUESTS) {
+      if (parseInt(rooms.value, 10) !== MAX_ROOMS && parseInt(capacity.value, 10) === NOT_GUESTS
+    || parseInt(rooms.value, 10) === MAX_ROOMS && parseInt(capacity.value, 10) !== NOT_GUESTS) {
         evt.target.setCustomValidity(`Выберете другое количество гостей для ${rooms.value} комнат`);
         evt.target.style.boxShadow = INPUT_SHADOW;
       }
@@ -94,7 +94,7 @@
     const element = successModal .cloneNode(true);
     modalRender(element);
     window.main.adForm.reset();
-    resetForm();
+    reset();
   };
 
   // ------------------------------------------------------- Сообщение о неудачной отправке формы
@@ -137,7 +137,7 @@
   };
 
 
-  const resetForm = function () {
+  const reset = function () {
     window.main.adForm.reset();
     window.filterMap.mapFilters.reset();
     reloadPage();
@@ -147,14 +147,14 @@
 
   // ------------------ Экспорт
   window.form = {
-    activateForm,
+    activate,
     adPrice,
     mainpage,
     getSucces,
     getError,
     buttonReset,
     reloadPage,
-    resetForm,
+    reset,
     makeAd,
     INPUT_SHADOW,
   };
