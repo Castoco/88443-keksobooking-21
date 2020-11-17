@@ -11,8 +11,8 @@
   const mainPin = map.querySelector(`.map__pin--main`);
 
   // ----------------------------------------------- Модуль перетаскивания главной кнопки.
-  const movingPin = function () {
-    mainPin.addEventListener(`mousedown`, function (evt) {
+  const movingPin = () => {
+    mainPin.addEventListener(`mousedown`, (evt) => {
       evt.preventDefault();
 
       let startCords = {
@@ -20,7 +20,7 @@
         y: evt.clientY
       };
 
-      const onMouseMove = function (moveEvt) {
+      const onMouseMove = (moveEvt) => {
         moveEvt.preventDefault();
         getMainPinAdress();
 
@@ -44,7 +44,7 @@
         }
       };
 
-      const onMouseUp = function (upEvt) {
+      const onMouseUp = (upEvt) => {
         upEvt.preventDefault();
 
         document.removeEventListener(`mousemove`, onMouseMove);

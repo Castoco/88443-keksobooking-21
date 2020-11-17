@@ -19,7 +19,7 @@
   const mainPin = map.querySelector(`.map__pin--main`);
 
   // ----------------------------------------------------------Состояние страницы до активации карты
-  const getInputs = function () {
+  const getInputs = () => {
     const filters = Array.from(formFilters);
     const adInput = Array.from(formInputs);
     const adInputs = adInput.concat(filters);
@@ -35,7 +35,7 @@
 
   const inputs = getInputs();
 
-  const disabledPage = function () {
+  const disabledPage = () => {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
 
@@ -58,7 +58,7 @@
 
   // ---------------------------------------------- Вызываю активвацию формы и карты при кликле на главную кнопку
 
-  const onPinMouseDown = function (evt) {
+  const onPinMouseDown = (evt) => {
     if (evt.which === LEFT_MOUSE_BUTTON) {
       activatePins();
       window.form.activate();
@@ -66,7 +66,7 @@
     mainPin.removeEventListener(`mousedown`, onPinMouseDown);
   };
 
-  const onPinKeyDown = function (evt) {
+  const onPinKeyDown = (evt) => {
     if (evt.key === `Enter`) {
       activatePins();
       window.form.activate();
@@ -78,13 +78,13 @@
   mainPin.addEventListener(`keydown`, onPinKeyDown);
 
   // ---------------------------------------------------------------- Функция активации пинов
-  const activatePins = function () {
+  const activatePins = () => {
     window.moving.getMainPinAdress();
     window.dataServer.load(URL_GET, GET, window.filterMap.successHandler, window.util.renderErrorMesage);
     window.form.buttonReset.addEventListener(`click`, window.form.reset);
   };
 
-  adForm.addEventListener(`submit`, function (evt) {
+  adForm.addEventListener(`submit`, (evt) => {
     evt.preventDefault();
     window.dataServer.load(URL_POST, POST, window.form.getSucces, window.form.getError, new FormData(adForm));
   });
@@ -93,8 +93,8 @@
   // -------------------------------------------------------------- дествие с пинами на карте, при клике.
 
 
-  const onClickPin = function (pin, base) {
-    pin.addEventListener(`click`, function () {
+  const onClickPin = (pin, base) => {
+    pin.addEventListener(`click`, () => {
       const activedPin = map.querySelector(`.map__pin--active`);
       if (map.querySelector(`.popup`)) {
         closePopup();
@@ -107,7 +107,7 @@
     });
   };
 
-  const closePopup = function () {
+  const closePopup = () => {
     const popup = map.querySelector(`.popup`);
     if (popup) {
       popup.remove();

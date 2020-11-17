@@ -2,7 +2,7 @@
 (function () {
   const DEBOUNCE_INTERVAL = 500; // ms
 
-  const renderErrorMesage = function (message) { // ------- Сообщение об ошибке
+  const renderErrorMesage = (message) => { // ------- Сообщение об ошибке
     const fail = document.createElement(`div`);
     fail.textContent = message;
     fail.style = `width: 100%; height: 100px; margin: 0 auto; background: red; text-align: center; top: 300px`;
@@ -13,14 +13,14 @@
 
   let lastTimeout = null;
 
-  const debounce = function (cb) {
+  const debounce = (cb) => {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
     lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
   };
 
-  const onModalPressEsc = function (evt, cb) {
+  const onModalPressEsc = (evt, cb) => {
     if (evt.key === `Escape`) {
       cb();
     }

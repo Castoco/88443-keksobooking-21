@@ -17,7 +17,7 @@
   const mainpage = document.querySelector(`main`);
   const buttonReset = document.querySelector(`.ad-form__reset`);
 
-  const activate = function () {
+  const activate = () => {
     window.main.map.classList.remove(`map--faded`);
     window.main.adForm.classList.remove(`ad-form--disabled`);
 
@@ -26,10 +26,9 @@
     });
   };
 
-  const makeAd = function (evt) {
+  const makeAd = (evt) => {
     evt.target.setCustomValidity(``);
     evt.target.style.boxShadow = ``;
-
 
     if (evt.target.matches(`#capacity`) || evt.target.matches(`#room_number`)) {
       rooms.setCustomValidity(``);
@@ -90,7 +89,7 @@
   window.main.adForm.addEventListener(`input`, makeAd);
 
   // -------------------------------------------------------- Сообщение об успешной отправке формы
-  const getSucces = function () {
+  const getSucces = () => {
     const element = successModal .cloneNode(true);
     modalRender(element);
     window.main.adForm.reset();
@@ -98,25 +97,25 @@
   };
 
   // ------------------------------------------------------- Сообщение о неудачной отправке формы
-  const getError = function () {
+  const getError = () => {
     const element = errorModal.cloneNode(true);
     modalRender(element);
   };
 
   // ------------------------------------------------------- Функция отрисовки модалки
-  const modalRender = function (element) {
+  const modalRender = (element) => {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
     mainpage.appendChild(fragment);
     document.addEventListener(`keydown`, window.onModalPressEsc);
-    element.addEventListener(`click`, function (evt) {
+    element.addEventListener(`click`, (evt)=> {
       evt.preventDefault();
       element.remove();
     });
   };
 
   // ---------------------------------------------- Закрытие модального окна и удаление обработчика по Keydow Escape
-  const modalClose = function () {
+  const modalClose = () => {
     const succes = document.querySelector(`.success`);
     const error = document.querySelector(`.error`);
     if (succes) {
@@ -129,21 +128,19 @@
 
   window.util.onModalPressEsc(modalClose);
 
-  const reloadPage = function () {
+  const reloadPage = () => {
     window.main.disabledPage();
     window.main.closePopup();
     window.main.mainPin.addEventListener(`mousedown`, window.main.onPinMouseDown);
     window.main.mainPin.addEventListener(`keydown`, window.main.onPinKeyDown);
   };
 
-
-  const reset = function () {
+  const reset = () => {
     window.main.adForm.reset();
     window.filterMap.mapFilters.reset();
     reloadPage();
     adPrice.setAttribute(`placeholder`, `${window.data.TYPE_HOTEL[`house`].minprice}`);
   };
-
 
   // ------------------ Экспорт
   window.form = {

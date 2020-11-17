@@ -8,10 +8,10 @@
     NotFound: 404
   };
 
-  const load = function (url, method, onSuccess, onError, data) {
+  const load = (url, method, onSuccess, onError, data) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
-    xhr.addEventListener(`load`, function () {
+    xhr.addEventListener(`load`, () => {
       let sms;
       switch (xhr.status) {
         case CODE.ok:
@@ -35,7 +35,7 @@
       }
     });
 
-    xhr.addEventListener(`error`, function () {
+    xhr.addEventListener(`error`, () => {
       onError(`Произошла ошибка соединения`);
     });
     xhr.open(method, url);

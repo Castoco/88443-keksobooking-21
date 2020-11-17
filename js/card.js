@@ -8,7 +8,7 @@
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
 
-  const makeOffer = function (pinPopup) {
+  const makeOffer = (pinPopup) => {
     const card = getPinCard(pinPopup);
     const delButton = card.querySelector(`.popup__close`);
     window.main.map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
@@ -17,7 +17,7 @@
   };
 
 
-  const getPinCard = function (element) {
+  const getPinCard = (element) => {
     const card = cardTemplate.cloneNode(true);
     card.querySelector(`.popup__avatar`).src = element.author.avatar;
     card.querySelector(`.popup__title`).textContent = element.offer.title;

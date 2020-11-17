@@ -19,17 +19,17 @@
   let pins = [];
 
 
-  const successHandler = function (data) {
+  const successHandler = (data) => {
     pins = data;
     updatePins();
   };
 
-  const updateData = function () {
+  const updateData = () => {
     window.util.debounce(updatePins);
     window.main.closePopup();
   };
 
-  const updatePins = function () {
+  const updatePins = () => {
     let status = {
       features: [],
       typePin: `any`,
@@ -57,7 +57,7 @@
 
   mapFilters.addEventListener(`change`, updateData);
 
-  const getFeatures = function (element, features) {
+  const getFeatures = (element, features) => {
     let flag = true;
     features.forEach((feature) => {
       if (!element.includes(feature.value)) {
@@ -67,7 +67,7 @@
     return flag;
   };
 
-  const checkFilter = function (element, status) {
+  const checkFilter = (element, status) => {
     let isType = true;
     let isPrice = true;
     let isRoom = true;
@@ -92,7 +92,7 @@
     return isType && isPrice && isRoom && isGuests && isFeatures;
   };
 
-  const getPrices = function (value) {
+  const getPrices = (value) => {
     let cost = DEFAULT_STATUS;
     if (value >= MIN_PRICE || value <= HIGH_PRICE) {
       cost = MIDDLE_PRICE;
@@ -106,7 +106,7 @@
     return cost;
   };
 
-  const getRooms = function (value) {
+  const getRooms = (value) => {
     let offerRoom = String(value);
     if (value > MAX_ROOM || value <= MIN_ROOM) {
       offerRoom = DEFAULT_STATUS;
@@ -114,7 +114,7 @@
     return offerRoom;
   };
 
-  const getGuests = function (value) {
+  const getGuests = (value) => {
     let offerGuests = String(value);
     if (value > MAX_GUESTS || value < NOT_GUESTS) {
       offerGuests = DEFAULT_STATUS;

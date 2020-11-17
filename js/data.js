@@ -28,7 +28,7 @@
   const mapList = window.main.map.querySelector(`.map__pins`);
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-  const renderElement = function (render) { // -----Функция отрисовки пинов
+  const renderElement = (render) => { // -----Функция отрисовки пинов
     const element = pinTemplate.cloneNode(true);
     element.style = `left: ${render.location.x - PIN_WIDTH_SCALE}px; top: ${render.location.y - PIN_SCALE}px;`;
     element.querySelector(`img`).src = render.author.avatar;
@@ -37,7 +37,7 @@
     return element;
   };
 
-  const renderPins = function (pinsBase) {
+  const renderPins = (pinsBase) => {
     const pins = mapList.querySelectorAll(`.map__pin:not(.map__pin--main)`);
     const mapFragment = document.createDocumentFragment();
 
