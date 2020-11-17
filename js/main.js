@@ -111,25 +111,20 @@
     if (popup) {
       popup.remove();
     }
-    document.removeEventListener(`keydown`, onPopupPressEsc);
+    document.removeEventListener(`keydown`, closePopup);
     const activedPin = map.querySelector(`.map__pin--active`);
     if (activedPin) {
       activedPin.classList.remove(`map__pin--active`);
     }
   };
 
-  const onPopupPressEsc = function (evt) {
-    if (evt.key === `Escape`) {
-      closePopup();
-    }
-  };
+  window.onModalPressEsc = (closePopup);
 
   // --------------------------------------------------- Экспорт -----
   window.main = {
     onClickPin,
     map,
     closePopup,
-    onPopupPressEsc,
     adForm,
     inputs,
     disabledPage,

@@ -13,7 +13,7 @@
     const delButton = card.querySelector(`.popup__close`);
     window.main.map.insertBefore(pinPopupFragment.appendChild(card), mapFilter);
     delButton.addEventListener(`click`, window.main.closePopup);
-    document.addEventListener(`keydown`, window.main.onPopupPressEsc);
+    document.addEventListener(`keydown`, window.main.closePopup);
   };
 
 
@@ -29,7 +29,7 @@
     const featuresList = card.querySelector(`.popup__features`);
     featuresList.innerHTML = ``;
 
-    if (element.offer.features.length === 0) {
+    if (!element.offer.features.length) {
       card.removeChild(featuresList);
     }
 
@@ -43,7 +43,7 @@
     const photoList = card.querySelector(`.popup__photos`);
     const photoItem = photoList.querySelector(`.popup__photo`);
 
-    if (element.offer.photos.length === 0) {
+    if (!element.offer.photos.length) {
       card.removeChild(photoList);
     }
 

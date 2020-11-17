@@ -20,9 +20,16 @@
     lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
   };
 
+  const onModalPressEsc = function (evt, cb) {
+    if (evt.key === `Escape`) {
+      cb();
+    }
+  };
+
   window.util = {
     renderErrorMesage,
-    debounce
+    debounce,
+    onModalPressEsc
   };
 
 })();

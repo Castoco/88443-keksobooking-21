@@ -108,7 +108,7 @@
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
     mainpage.appendChild(fragment);
-    document.addEventListener(`keydown`, onModalPressEsc);
+    document.addEventListener(`keydown`, modalClose);
     element.addEventListener(`click`, function (evt) {
       evt.preventDefault();
       element.remove();
@@ -116,18 +116,18 @@
   };
 
   // ---------------------------------------------- Закрытие модального окна и удаление обработчика по Keydow Escape
-  const onModalPressEsc = function (evt) {
+  const modalClose = function () {
     const succes = document.querySelector(`.success`);
     const error = document.querySelector(`.error`);
-    if (evt.key === `Escape`) {
-      if (succes) {
-        succes.remove();
-      } else if (errorModal) {
-        error.remove();
-      }
-      document.removeEventListener(`keydown`, onModalPressEsc);
+    if (succes) {
+      succes.remove();
+    } else if (errorModal) {
+      error.remove();
     }
+    document.removeEventListener(`keydown`, modalClose);
   };
+
+  window.onModalPressEsc = (modalClose);
 
   const reloadPage = function () {
     window.main.disabledPage();
