@@ -33,11 +33,11 @@
       card.removeChild(featuresList);
     }
 
-    for (let i = 0; i < element.offer.features.length; i++) {
+    element.offer.features.forEach((featureElement) => {
       const featuresItem = document.createElement(`li`);
-      featuresItem.classList.add(`popup__feature`, `popup__feature--${element.offer.features[i]}`);
+      featuresItem.classList.add(`popup__feature`, `popup__feature--${featureElement}`);
       featuresList.appendChild(featuresItem);
-    }
+    });
 
     card.querySelector(`.popup__description`).textContent = element.offer.description;
     const photoList = card.querySelector(`.popup__photos`);
@@ -47,11 +47,11 @@
       card.removeChild(photoList);
     }
 
-    for (let j = 0; j < element.offer.photos.length; j++) {
+    element.offer.photos.forEach((photosElement) => {
       const item = photoItem.cloneNode(true);
-      item.src = element.offer.photos[j];
+      item.src = photosElement;
       photoList.appendChild(item);
-    }
+    });
     photoList.removeChild(photoItem);
 
     return card;

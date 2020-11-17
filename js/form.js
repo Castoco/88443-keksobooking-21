@@ -21,9 +21,9 @@
     window.main.map.classList.remove(`map--faded`);
     window.main.adForm.classList.remove(`ad-form--disabled`);
 
-    for (let i = 0; i < window.main.inputs.length; i++) {
-      window.main.inputs[i].removeAttribute(`disabled`, `disabled`);
-    }
+    window.main.inputs.forEach((input) => {
+      input.removeAttribute(`disabled`, `disabled`);
+    });
   };
 
   const makeAd = function (evt) {
@@ -124,7 +124,7 @@
     } else if (errorModal) {
       error.remove();
     }
-    document.removeEventListener(`keydown`, modalClose);
+    document.removeEventListener(`keydown`, window.onModalPressEsc);
   };
 
   window.onModalPressEsc = (modalClose);

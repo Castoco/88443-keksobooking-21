@@ -30,23 +30,25 @@
     const inputMap = Array.from(mapInputs);
     const mapFilter = selectMap.concat(inputMap);
 
-    return formInputsButtons .concat(mapFilter);
+    return formInputsButtons.concat(mapFilter);
   };
+
   const inputs = getInputs();
 
   const disabledPage = function () {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
 
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].setAttribute(`disabled`, `disabled`);
-      inputs[i].style.boxShadow = ``;
-    }
+    inputs.forEach((input) => {
+      input.setAttribute(`disabled`, `disabled`);
+      input.style.boxShadow = ``;
+    });
 
-    const buttons = map.querySelectorAll(`.map__pin`);
-    for (let i = 1; i < buttons.length; i++) {
-      buttons[i].remove();
-    }
+    const buttons = map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+
+    buttons.forEach((button) => {
+      button.remove();
+    });
 
     mainPin.style.top = `${MAIN_PIN_TOP}px`;
     mainPin.style.left = `${MAIN_PIN_LEFT}px`;
@@ -79,7 +81,6 @@
   const activatePins = function () {
     window.moving.getMainPinAdress();
     window.dataServer.load(URL_GET, GET, window.filterMap.successHandler, window.util.renderErrorMesage);
-
     window.form.buttonReset.addEventListener(`click`, window.form.reset);
   };
 

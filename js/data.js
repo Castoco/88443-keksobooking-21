@@ -41,18 +41,16 @@
     const pins = mapList.querySelectorAll(`.map__pin:not(.map__pin--main)`);
     const mapFragment = document.createDocumentFragment();
 
-    for (let j = 0; j < pins.length; j++) {
-      pins[j].remove();
-    }
+    pins.forEach((pin) => {
+      pin.remove();
+    });
 
-    const pinsLength = (pinsBase.length > PINS_COUNT) ? PINS_COUNT : pinsBase.length;
-
-    for (let i = 0; i < pinsLength; i++) {
-      let pin = renderElement(pinsBase[i]);
-      window.main.onClickPin(pin, pinsBase[i]); // Обработчик кликов на пин
+    pinsBase.forEach((pinElement) => {
+      let pin = renderElement(pinElement);
+      window.main.onClickPin(pin, pinElement); // Обработчик кликов на пин
       mapFragment.appendChild(pin);
       mapList.appendChild(mapFragment);
-    }
+    });
   };
 
   window.data = {
